@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>The purpose of redux-thunk</title>
+  <meta name="description" content="The benefit/purpose of the redux-thunk middleware was pretty hard to understand when I was first going through the redux docs, so I thought that writing some...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/react/2017/01/16/the-purpose-of-redux-thunk.html">
+
+  <script type="text/javascript" src="/assets/js/main.js"></script>
+</head>
+
+
+  <body>
+
+    <header class="header" role="banner">
+
+  <div class="wrapper site-nav-wrapper">
+    <div class="site-nav_logo"><a href="/"><?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>Untitled</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g class="logo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M184.809173,81.5864678 L185.541299,69.9568299 C185.541299,69.9568299 185.548707,67.1778728 187.911773,69.6901516 C190.274839,72.2024305 257.717314,133.2967 259.424944,134.919745 C261.132574,136.542789 262.130883,137.566128 262.130883,140.232911 C262.130883,144.834916 261.895865,152.967311 261.895865,154.785299 C261.895865,155.4524 261.232612,155.821597 260.530819,155.282872 C259.829026,154.744148 257.820053,152.870846 257.820053,152.870846 C257.820053,152.870846 188.729599,90.672118 187.709805,89.7353739 C186.690011,88.7986297 185.284875,87.5030455 184.958069,85.9426009 C184.631264,84.3821563 184.809173,81.5864678 184.809173,81.5864678 Z" class="animated-logo_upper" fill="#FFFFFF"></path>
+        <path d="M219.048339,223.947705 L219.780464,212.318068 C219.780464,212.318068 219.787872,209.53911 222.150938,212.051389 C224.514004,214.563668 291.956479,275.657938 293.664109,277.280983 C295.371739,278.904027 296.370048,279.927365 296.370048,282.594148 C296.370048,287.196153 296.13503,295.328549 296.13503,297.146536 C296.13503,297.813638 295.471778,298.182835 294.769984,297.64411 C294.068191,297.105385 292.059218,295.232083 292.059218,295.232083 C292.059218,295.232083 222.968765,233.033356 221.94897,232.096612 C220.929176,231.159867 219.52404,229.864283 219.197235,228.303839 C218.870429,226.743394 219.048339,223.947705 219.048339,223.947705 Z" class="animated-logo_lower" fill="#FFFFFF"></path>
+        <path d="M184.048339,136.947705 L184.780464,125.318068 C184.780464,125.318068 184.787872,122.53911 187.150938,125.051389 C187.675151,125.608702 191.401989,129.048897 196.903386,134.083214 C211.046582,147.025624 272.132084,202.708359 285.467523,214.824972 C290.327948,219.241166 293.523049,222.148057 293.877998,222.485425 C295.585628,224.10847 296.583937,225.131808 296.583937,227.798591 C296.583937,232.400596 296.348919,240.532991 296.348919,242.350979 C296.348919,243.01808 295.685666,243.387277 294.983873,242.848552 C294.28208,242.309828 292.273107,240.436526 292.273107,240.436526 C292.273107,240.436526 287.545004,236.180048 280.544267,229.877295 C265.293625,216.147166 204.044141,160.501847 192.608014,150.199109 C189.226022,147.152293 187.120834,145.254479 186.94897,145.096612 C185.929176,144.159867 184.52404,142.864283 184.197235,141.303839 C183.870429,139.743394 184.048339,136.947705 184.048339,136.947705 Z" class="animated-logo_middle" fill="#FFFFFF"></path>
+    </g>
+</svg>
+</a></div>
+    <nav class="site-nav">
+      <a class="site-nav_page-link" target="_blank" href="https://github.com/shamwow">GitHub</a>
+      <a class="site-nav_page-link" target="_blank" href="https://ca.linkedin.com/pub/shahmeer-navid/41/a16/6b4">LinkedIn</a>
+      <a class="site-nav_page-link" target="_blank" href="mailto:shahmeernavid@gmail.com">Email</a>
+      <a class="site-nav_page-link" target="_blank" href="/resume.pdf">Resume</a>
+    </nav>
+  </div>
+
+</header>
+
+
+    <main class="page-content">
+      <div class="wrapper">
+        <div class="about-header">
+          <a href="/">
+            <div class="about-header_main-logo"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 115 240" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <g class="logo" sketch:type="MSLayerGroup" fill-opacity="1.0" fill="#FFFFFF" fill-rule="evenodd">
+        <path d="M3.794,0.876 C2.137,-0.626 1.173,-0.13 1.124,1.856 C1.022,5.994 0.85,12.934 0.764,16.399 C0.732,17.692 1.096,18.85 1.81,19.498 C9.935,26.863 61.838,72.95 75.526,85.357 C77.682,87.312 77.874,86.681 77.896,84.211 C77.934,79.804 77.991,73.101 78.018,69.938 C78.027,68.838 77.522,67.704 76.585,66.854 C67.289,58.427 15.964,11.906 3.794,0.876 Z" class="logo_upper" sketch:type="MSShapeGroup"></path>
+        <path d="M111.099,209.105 C101.802,200.678 50.477,154.157 38.308,143.126 C36.651,141.624 35.687,142.12 35.638,144.106 C35.536,148.243 35.364,155.183 35.278,158.649 C35.246,159.942 35.61,161.1 36.324,161.748 C44.449,169.113 95.294,215.2 108.983,227.607 C111.139,229.562 112.388,228.931 112.41,226.461 C112.447,222.054 112.505,215.351 112.532,212.188 C112.541,211.089 112.036,209.955 111.099,209.105 L111.099,209.105 Z" class="logo_lower" sketch:type="MSShapeGroup"></path>
+        <path d="M111.099,153.841 C101.802,145.414 15.964,67.238 3.794,56.208 C2.137,54.706 1.172,55.203 1.124,57.188 C1.021,61.326 0.85,68.265 0.764,71.731 C0.732,73.024 1.096,74.182 1.81,74.829 C9.935,82.194 95.294,159.935 108.983,172.343 C111.139,174.298 112.388,173.667 112.409,171.197 C112.447,166.79 112.504,160.087 112.531,156.924 C112.541,155.825 112.036,154.691 111.099,153.841 L111.099,153.841 Z" class="logo_middle" sketch:type="MSShapeGroup"></path>
+    </g>
+</svg>
+</div>
+            <div class="about-header_slogan">
+              <h3 class="about-header_slogan_title">My name is Shahmeer</h3>
+              <span class="about-header_slogan_subtitle">I sometimes make things</span>
+            </div>
+          </a>
+        </div>
+        <div class="post">
+  
+    <img class="post_header-image" src="/assets/img/post_headers/redux-thunk.png">
+  
+
+  <div class="post_content">
+    <div class="post_meta">
+      <h2 class="post_meta_title">The purpose of redux-thunk</h2>
+
+      <span class="post_meta_date">Jan 16, 2017</span>
+    </div>
+
+    <p>The benefit/purpose of the redux-thunk middleware was pretty hard to understand when I was first going through the redux docs, so I thought that writing some things down about it would be a good idea.</p>
+
+<p>The goal of this post is to help better explain why redux-thunk exists, not how to use it. There is a ton of material out there that covers implementation details (I’ll link to a few below). Also, this post will probably make most sense if you have background knowledge on react and redux.</p>
+
+<!-- read more -->
+
+<p>Anyways, let’s get into it.</p>
+
+<p>As a general overview, redux-thunk is middleware designed to help make using asynchronous actions easier. Below is an example of an asynchronous action:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">dispatch</span><span class="p">({</span>
+  <span class="na">type</span><span class="p">:</span> <span class="nx">START_NETWORK_REQUEST</span><span class="p">,</span>
+  <span class="na">payload</span><span class="p">:</span> <span class="nx">ACTION_PAYLOAD</span><span class="p">,</span>
+<span class="p">});</span>
+
+<span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">dispatch</span><span class="p">({</span>
+    <span class="na">type</span><span class="p">:</span> <span class="nx">END_NETWORK_REQUEST</span><span class="p">,</span>
+  <span class="p">});</span>
+<span class="p">},</span> <span class="mi">5000</span><span class="p">);</span></code></pre></figure>
+
+<p>Here, the <code class="highlighter-rouge">setTimeout</code> is used to mimic the delay that might occur during an async process (like a network call).</p>
+
+<p>So everytime we wanted to perform the above action, we’d need to copy and paste the above code. Of course, we can avoid repeating ourselves by wrapping the code in a function:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">emitAsyncAction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ACTION_PAYLOAD</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">dispatch</span><span class="p">({</span>
+    <span class="na">type</span><span class="p">:</span> <span class="nx">START_NETWORK_REQUEST</span><span class="p">,</span>
+    <span class="na">payload</span><span class="p">:</span> <span class="nx">ACTION_PAYLOAD</span><span class="p">,</span>
+  <span class="p">});</span>
+
+  <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">dispatch</span><span class="p">({</span>
+      <span class="na">type</span><span class="p">:</span> <span class="nx">END_NETWORK_REQUEST</span><span class="p">,</span>
+    <span class="p">});</span>
+  <span class="p">},</span> <span class="mi">5000</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Usage within a component.</span>
+<span class="nx">emitAsyncAction</span><span class="p">(</span><span class="nx">payload</span><span class="p">);</span></code></pre></figure>
+
+<p>This looks alright but we will probably not have access to the <code class="highlighter-rouge">dispatch</code> function where <code class="highlighter-rouge">emitAsyncAction</code> is defined. We could somehow get around this if we have a singleton store but that introduces more complications if we also want to get server side rendering to work[1].</p>
+
+<p>So the easiest appraoch is to just have dispatch be passed into <code class="highlighter-rouge">emitAsyncAction</code>:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">emitAsyncAction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dispatch</span><span class="p">,</span> <span class="nx">ACTION_PAYLOAD</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">dispatch</span><span class="p">({</span>
+    <span class="na">type</span><span class="p">:</span> <span class="nx">START_NETWORK_REQUEST</span><span class="p">,</span>
+    <span class="na">payload</span><span class="p">:</span> <span class="nx">ACTION_PAYLOAD</span><span class="p">,</span>
+  <span class="p">});</span>
+
+  <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">dispatch</span><span class="p">({</span>
+      <span class="na">type</span><span class="p">:</span> <span class="nx">END_NETWORK_REQUEST</span><span class="p">,</span>
+    <span class="p">});</span>
+  <span class="p">},</span> <span class="mi">5000</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Usage within a component.</span>
+<span class="nx">emitAsyncAction</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">,</span> <span class="nx">payload</span><span class="p">);</span></code></pre></figure>
+
+<p>This works and is pretty reasonable. However, some people might prefer not having to pass <code class="highlighter-rouge">dispatch</code> to <code class="highlighter-rouge">emitAsyncAction</code>. This is where redux-thunk comes in. The middleware allows <code class="highlighter-rouge">dispatch</code> to accept functions instead of just action objects.</p>
+
+<p>After refactoring our code a little bit, we have:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">asyncActionCreator</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ACTION_PAYLOAD</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">dispatch</span><span class="p">({</span>
+      <span class="na">type</span><span class="p">:</span> <span class="nx">START_NETWORK_REQUEST</span><span class="p">,</span>
+      <span class="na">payload</span><span class="p">:</span> <span class="nx">ACTION_PAYLOAD</span><span class="p">,</span>
+    <span class="p">});</span>
+
+    <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">dispatch</span><span class="p">({</span>
+        <span class="na">type</span><span class="p">:</span> <span class="nx">END_NETWORK_REQUEST</span><span class="p">,</span>
+      <span class="p">});</span>
+    <span class="p">},</span> <span class="mi">5000</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="c1">// Usage within a component.</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">asyncActionCreator</span><span class="p">(</span><span class="nx">payload</span><span class="p">));</span></code></pre></figure>
+
+<p>Instead of having a function called <code class="highlighter-rouge">emitAsyncAction</code>, we have <code class="highlighter-rouge">asyncActionCreator</code>. Usually an “action” is just an object but we can think of the function returned by <code class="highlighter-rouge">asyncActionCreator</code> to be an action as well[2]. So when we dispatch our async action, redux/redux-thunk will execute the function in a context where <code class="highlighter-rouge">dispatch</code> is available.</p>
+
+<p>And that’s it. redux-thunk is basically a form of syntactic sugar to prevent having to pass <code class="highlighter-rouge">dispatch</code> around. To me, the biggest aesthetic benefit is that dispatching asyncrhonous and synchronous actions look the same with redux-thunk:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">asyncActionCreator</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ACTION_PAYLOAD</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="p">...</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">syncActionCreator</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ACTION_PAYLOAD</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="p">...</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="c1">// Usage within a component.</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">asyncActionCreator</span><span class="p">(</span><span class="nx">payload</span><span class="p">));</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">syncActionCreator</span><span class="p">(</span><span class="nx">payload</span><span class="p">));</span></code></pre></figure>
+
+<p>There are some other posts out there that help explain why redux-thunk exists, most notably this <a href="http://stackoverflow.com/questions/35411423/how-to-dispatch-a-redux-action-with-a-timeout/35415559#35415559">stackoverflow answer</a>. The answer gives a few other reasons why redux-thunk exists but, to be honest, I found most of them poorly explained and/or unconvincing. Regardless, you should check it out and judge for yourself.</p>
+
+<p>If you want to learn how to use resux-thunk, check out some of these links:</p>
+
+<ul>
+  <li><a href="http://redux.js.org/docs/advanced/AsyncActions.html">http://redux.js.org/docs/advanced/AsyncActions.html</a></li>
+  <li><a href="https://github.com/gaearon/redux-thunk">https://github.com/gaearon/redux-thunk</a></li>
+  <li><a href="https://medium.com/@stowball/a-dummys-guide-to-redux-and-thunk-in-react-d8904a7005d3#.ffc3zyw1c">https://medium.com/@stowball/a-dummys-guide-to-redux-and-thunk-in-react-d8904a7005d3#.ffc3zyw1c</a></li>
+</ul>
+
+<p>[1] <a href="http://redux.js.org/docs/recipes/ServerRendering.html">http://redux.js.org/docs/recipes/ServerRendering.html</a>
+[2] I mean, technicallly, a JS function is an object but you know what I mean.</p>
+
+  </div>
+
+</div>
+
+      </div>
+    </main>
+
+  </body>
+
+</html>
