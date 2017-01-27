@@ -1,5 +1,8 @@
 .DS_STORE
 
+Gemfile
+Gemfile.lock
+
 # Logs
 logs
 *.log
