@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Graph theory and its relevance to graphics</title>
+  <meta name="description" content="Graph theory is one of my favorite topics within math. The subject not only offers some pretty fun problems to solve but it also has some important applicati...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="https://shahmeer.co/math/2017/02/02/graph-theory-and-computer-graphics.html">
+
+  <script type="text/javascript" src="/assets/js/main.js"></script>
+</head>
+
+
+  <body>
+
+    <header class="header" role="banner">
+
+  <div class="wrapper site-nav-wrapper">
+    <div class="site-nav_logo"><a href="/><?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>Untitled</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g class="logo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M184.809173,81.5864678 L185.541299,69.9568299 C185.541299,69.9568299 185.548707,67.1778728 187.911773,69.6901516 C190.274839,72.2024305 257.717314,133.2967 259.424944,134.919745 C261.132574,136.542789 262.130883,137.566128 262.130883,140.232911 C262.130883,144.834916 261.895865,152.967311 261.895865,154.785299 C261.895865,155.4524 261.232612,155.821597 260.530819,155.282872 C259.829026,154.744148 257.820053,152.870846 257.820053,152.870846 C257.820053,152.870846 188.729599,90.672118 187.709805,89.7353739 C186.690011,88.7986297 185.284875,87.5030455 184.958069,85.9426009 C184.631264,84.3821563 184.809173,81.5864678 184.809173,81.5864678 Z" class="animated-logo_upper" fill="#FFFFFF"></path>
+        <path d="M219.048339,223.947705 L219.780464,212.318068 C219.780464,212.318068 219.787872,209.53911 222.150938,212.051389 C224.514004,214.563668 291.956479,275.657938 293.664109,277.280983 C295.371739,278.904027 296.370048,279.927365 296.370048,282.594148 C296.370048,287.196153 296.13503,295.328549 296.13503,297.146536 C296.13503,297.813638 295.471778,298.182835 294.769984,297.64411 C294.068191,297.105385 292.059218,295.232083 292.059218,295.232083 C292.059218,295.232083 222.968765,233.033356 221.94897,232.096612 C220.929176,231.159867 219.52404,229.864283 219.197235,228.303839 C218.870429,226.743394 219.048339,223.947705 219.048339,223.947705 Z" class="animated-logo_lower" fill="#FFFFFF"></path>
+        <path d="M184.048339,136.947705 L184.780464,125.318068 C184.780464,125.318068 184.787872,122.53911 187.150938,125.051389 C187.675151,125.608702 191.401989,129.048897 196.903386,134.083214 C211.046582,147.025624 272.132084,202.708359 285.467523,214.824972 C290.327948,219.241166 293.523049,222.148057 293.877998,222.485425 C295.585628,224.10847 296.583937,225.131808 296.583937,227.798591 C296.583937,232.400596 296.348919,240.532991 296.348919,242.350979 C296.348919,243.01808 295.685666,243.387277 294.983873,242.848552 C294.28208,242.309828 292.273107,240.436526 292.273107,240.436526 C292.273107,240.436526 287.545004,236.180048 280.544267,229.877295 C265.293625,216.147166 204.044141,160.501847 192.608014,150.199109 C189.226022,147.152293 187.120834,145.254479 186.94897,145.096612 C185.929176,144.159867 184.52404,142.864283 184.197235,141.303839 C183.870429,139.743394 184.048339,136.947705 184.048339,136.947705 Z" class="animated-logo_middle" fill="#FFFFFF"></path>
+    </g>
+</svg>
+</a></div>
+    <nav class="site-nav">
+      <a class="site-nav_page-link" target="_blank" href="https://github.com/shamwow">GitHub</a>
+      <a class="site-nav_page-link" target="_blank" href="https://ca.linkedin.com/pub/shahmeer-navid/41/a16/6b4">LinkedIn</a>
+      <a class="site-nav_page-link" target="_blank" href="mailto:shahmeernavid@gmail.com">Email</a>
+      <a class="site-nav_page-link" target="_blank" href="/assets/resume.pdf">Resume</a>
+    </nav>
+  </div>
+
+</header>
+
+
+    <main class="page-content">
+      <div class="wrapper">
+        <div class="about-header-wrapper">
+          <div class="about-header">
+            <a href="/">
+              <div class="about-header_main-logo"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 115 240" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <g class="logo" sketch:type="MSLayerGroup" fill-opacity="1.0" fill="#FFFFFF" fill-rule="evenodd">
+        <path d="M3.794,0.876 C2.137,-0.626 1.173,-0.13 1.124,1.856 C1.022,5.994 0.85,12.934 0.764,16.399 C0.732,17.692 1.096,18.85 1.81,19.498 C9.935,26.863 61.838,72.95 75.526,85.357 C77.682,87.312 77.874,86.681 77.896,84.211 C77.934,79.804 77.991,73.101 78.018,69.938 C78.027,68.838 77.522,67.704 76.585,66.854 C67.289,58.427 15.964,11.906 3.794,0.876 Z" class="logo_upper" sketch:type="MSShapeGroup"></path>
+        <path d="M111.099,209.105 C101.802,200.678 50.477,154.157 38.308,143.126 C36.651,141.624 35.687,142.12 35.638,144.106 C35.536,148.243 35.364,155.183 35.278,158.649 C35.246,159.942 35.61,161.1 36.324,161.748 C44.449,169.113 95.294,215.2 108.983,227.607 C111.139,229.562 112.388,228.931 112.41,226.461 C112.447,222.054 112.505,215.351 112.532,212.188 C112.541,211.089 112.036,209.955 111.099,209.105 L111.099,209.105 Z" class="logo_lower" sketch:type="MSShapeGroup"></path>
+        <path d="M111.099,153.841 C101.802,145.414 15.964,67.238 3.794,56.208 C2.137,54.706 1.172,55.203 1.124,57.188 C1.021,61.326 0.85,68.265 0.764,71.731 C0.732,73.024 1.096,74.182 1.81,74.829 C9.935,82.194 95.294,159.935 108.983,172.343 C111.139,174.298 112.388,173.667 112.409,171.197 C112.447,166.79 112.504,160.087 112.531,156.924 C112.541,155.825 112.036,154.691 111.099,153.841 L111.099,153.841 Z" class="logo_middle" sketch:type="MSShapeGroup"></path>
+    </g>
+</svg>
+</div>
+              <div class="about-header_slogan">
+                <h3 class="about-header_slogan_title">My name is Shahmeer</h3>
+                <span class="about-header_slogan_subtitle">I sometimes make things</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="post">
+  
+    <img class="post_header-image" src="/assets/img/post_headers/graph-theory-and-comp-sci.svg">
+  
+
+  <div class="post_content">
+    <div class="post_meta">
+      <h2 class="post_meta_title">Graph theory and its relevance to graphics</h2>
+
+      <span class="post_meta_date">Feb 2, 2017</span>
+    </div>
+
+    <p>Graph theory is one of my favorite topics within math. The subject not only offers some pretty fun problems to solve but it also has some important applications in many other fields, not just computer science.</p>
+
+<p>Most of graph theory’s computer science applications seem to be related to finding shortest paths though - whether it’s for finding the shortest route to a location on a map or it’s for finding the shortest path from one node to another in a network. There are a whole bunch of other cool graph theory applications so I decided to write about one that seemed pretty interesting to me: using graph theory to help better represent triangle meshes.</p>
+
+<!-- read more -->
+
+<p>Fair warning though - what I’m about to talk about is actually pretty useless. This is partly because of being outdated but I’ll expand on why in a bit.</p>
+
+<p>If you’re not familiar, graphics hardware is really good at rendering triangles. So most graphics models are represented as just that, a whole bunch of triangles. Triangles themselves are represented as 3 vertices. So in 3D space each triangle is represented using 9 numbers (xyz coordinates for each of the 3 vertices). A mesh is just a bunch of triangles that form some model, like a cube for example. Typical meshes can be made up of hundreds, if not thousands, of triangles.</p>
+
+<p>The data for these meshes usually first exists on the CPU and needs to be transferred to the GPU. Of course, the faster this transfer, the faster our graphics application is. So it makes sense to try to minimize the amount of data we transfer.</p>
+
+<p>The naive way to represent triangles meshes is to simply include each vertex of each triangle. We can do better than that though.</p>
+
+<p><img src="/assets/img/graph_theory_and_comp_sci/triangle_strip.svg" alt="Example of a triangle strip" /></p>
+
+<p>If you look at the mesh above, you’ll notice that the triangles share vertices. The above is actually a triangle strip and can be represented using something like:</p>
+
+<figure class="highlight"><pre><code class="language-obj" data-lang="obj">v1_x v1_y v1_z
+v2_x v2_y v2_z
+v3_x v3_y v3_z
+v4_x v4_y v4_z
+v5_x v5_y v5_z
+v6_x v6_y v6_z
+v7_x v7_y v7_z
+v8_x v8_y v8_z</code></pre></figure>
+
+<p>Only the first triangle in the strip needs to have all its vertices declared. Each subsequent triangle can be defined with just one addition vertex. Formally, a triangle strip is a series of triangles where each pair of consecutive triangles share an edge.</p>
+
+<p>This is pretty good compared to the naive representation, which uses 18 vertices compared just 8 vertices:</p>
+
+<figure class="highlight"><pre><code class="language-obj" data-lang="obj"># Triangle 1
+v1_x v1_y v1_z
+v2_x v2_y v2_z
+v3_x v3_y v3_z
+
+# Triangle 2
+v2_x v2_y v2_z
+v4_x v4_y v4_z
+v3_x v3_y v3_z
+
+# Triangle 3
+v3_x v3_y v3_z
+v4_x v4_y v4_z
+v5_x v5_y v5_z
+
+# Triangle 4
+v4_x v4_y v4_z
+v6_x v6_y v6_z
+v5_x v5_y v5_z
+
+# Triangle 5
+v5_x v5_y v5_z
+v6_x v6_y v6_z
+v7_x v7_y v7_z
+
+# Triangle 6
+v6_x v6_y v6_z
+v8_x v8_y v8_z
+v7_x v7_y v7_z</code></pre></figure>
+
+<p>If you’re paying attention, you’ll notice that the order of the vertices is kind of weird. This is because when the front face of the triangle needs to be known for things like culling. OpenGL uses the order the vertices are declared in, either clockwise or counter clockwise, to determine where the front face of the triangle is. You can read more about it <a traget="_blank" href="https://www.khronos.org/opengl/wiki/Face_Culling">here</a>.</p>
+
+<p>Now about why this is kind of useless. For one, not everything can be represented as triangle strips. Consider the poorly drawn polygon below and it’s triangulation:</p>
+
+<p><img src="/assets/img/graph_theory_and_comp_sci/polygon.svg" alt="Non triangle strip polygon" /></p>
+
+<p>So in the old days, people would decompose a model to as many triangle strips as possible and then also include any remaining triangles. However, better methods exists today, which brings me to the second reason why this is kind of useless: indexed meshes.</p>
+
+<p>With indexed meshes, all vertices are declared once and upfront. These vertices are then referenced when define the triangles that make up the mesh. When sent to the GPU, the defined vertices are loaded into memory and then used as needed. As far as I know, this is pretty much what everyone in industry does<sup><a href="#citation-1">[1]</a></sup>.</p>
+
+<p>Despite this though, I still think it’s worthwhile to learn about old methods. So back to the kind of useless (but interesting!) triangle strips. We know that having a triangle strip can help reduce the data we send to the GPU but that not all polygons can be represented as triangle strips. How can we determine if a polygon can be represented as a triangle strip? It turns out we can use the concept of Hamiltonian paths.</p>
+
+<p><img src="/assets/img/graph_theory_and_comp_sci/graphs.svg" alt="Examples of graph with and without Hamiltonian paths" /></p>
+
+<p>A Hamiltonian path is a walk through a graph that visits every vertex exactly once. Above, the graph on the left has a Hamiltonian path (highlighted) while the one on the right does not.</p>
+
+<p>Say we have a polygon and it’s triangulation. We can construct a dual graph where each triangle is a vertex and each vertex is connected if and only if their respective triangles share an edge. Below is an example using a modified version of the triangle strip from before:</p>
+
+<p><img src="/assets/img/graph_theory_and_comp_sci/dual.svg" alt="Example of a triangle strip" /></p>
+
+<p>If the dual graph contains a Hamiltonian path, we can say that the corresponding sequence of triangles form a triangle strip. We could formally write up a proof for this but it should be pretty easy to see.</p>
+
+<p>There are many conditions we can use to help determine if a graph has a Hamiltonian path. For example, if a graph has more than two vertices with degree 1, it can’t have a Hamiltonian path. Another example is Dirac’s theorem<sup><a href="#citation-2">[2]</a></sup>: a graph with <code class="highlighter-rouge">n &gt; 2</code> vertices has a Hamiltonian cycle if every vertex has degree greater than <code class="highlighter-rouge">n/2</code>.</p>
+
+<p>A couple of notes on Dirac’s theorem:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>1. If a graph has a Hamiltonian cycle, we know it must have a Hamiltonian path (just remove one edge in the cycle).
+2. Dirac's theorem only applies to simple graphs. So no loops or duplicate edges.
+</code></pre>
+</div>
+
+<p>There are a ton of other conditions<sup><a href="#citation-3">[3]</a></sup> but each one is either sufficient or necessary, not both at the same time. This basically means we don’t have a quick way of determining if a graph has a Hamiltonian path; the problem actually turns out to be NP complete[4].</p>
+
+<p>Kind of a bummer right? Regardless, it’s pretty cool to me that something like Hamiltonian paths can be somewhat relevant in computer graphics, a seemingly unrelated field.</p>
+
+<p>There are a couple of things I didn’t touch on here. For example, I talked about triangulations assuming we already had one. What if we’re given an arbitrary polygon and have to compute the triangulation? How many triangulations exist for a polygon and so all their corresponding dual graphs contain Hamiltonian paths? If you’re interested, these questions and more are discussed in <a traget="_blank" href="https://www.palfrader.org/research/misc/2011-tristrips.pdf">this paper</a>.</p>
+
+<p>[1] <a name="citation-1" traget="_blank" href="http://hacksoflife.blogspot.sg/2010/01/to-strip-or-not-to-strip.html">http://hacksoflife.blogspot.sg/2010/01/to-strip-or-not-to-strip.html</a><br />
+[2] <a name="citation-2" traget="_blank" href="https://en.wikipedia.org/wiki/Hamiltonian_path#Bondy.E2.80.93Chv.C3.A1tal_theorem">https://en.wikipedia.org/wiki/Hamiltonian_path”&gt;</a><br />
+[3] <a name="citation-3" traget="_blank" href="http://www.rose-hulman.edu/mathjournal/archives/2000/vol1-n1/paper4/v1n1-4pd.PDF">http://www.rose-hulman.edu</a><br /></p>
+
+
+  </div>
+
+</div>
+
+      </div>
+    </main>
+
+  </body>
+
+</html>

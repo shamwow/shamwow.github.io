@@ -68,7 +68,7 @@
         </div>
         <div class="post">
   
-    <img class="post_header-image" src="/assets/img/post_headers/redux-thunk.png">
+    <img class="post_header-image" src="/assets/img/post_headers/redux-thunk.svg">
   
 
   <div class="post_content">
@@ -101,7 +101,7 @@
 
 <p>Here, the <code class="highlighter-rouge">setTimeout</code> is used to mimic the delay that might occur during an async process (like a network call).</p>
 
-<p>So everytime we wanted to perform the above action, we’d need to copy and paste the above code. Of course, we can avoid repeating ourselves by wrapping the code in a function:</p>
+<p>So every time we wanted to perform the above action, we’d need to copy and paste the above code. Of course, we can avoid repeating ourselves by wrapping the code in a function:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">emitAsyncAction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ACTION_PAYLOAD</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">dispatch</span><span class="p">({</span>
@@ -121,7 +121,7 @@
 
 <p>This looks alright but we will probably not have access to the <code class="highlighter-rouge">dispatch</code> function where <code class="highlighter-rouge">emitAsyncAction</code> is defined. We could somehow get around this if we have a singleton store but that introduces more complications if we also want to get server side rendering to work<sup><a href="#citation-1">[1]</a></sup>.</p>
 
-<p>So the easiest appraoch is to just have dispatch be passed into <code class="highlighter-rouge">emitAsyncAction</code>:</p>
+<p>So the easiest approach is to just have dispatch be passed into <code class="highlighter-rouge">emitAsyncAction</code>:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">emitAsyncAction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dispatch</span><span class="p">,</span> <span class="nx">ACTION_PAYLOAD</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">dispatch</span><span class="p">({</span>
@@ -163,7 +163,7 @@
 
 <p>Instead of having a function called <code class="highlighter-rouge">emitAsyncAction</code>, we have <code class="highlighter-rouge">asyncActionCreator</code>. Usually an “action” is just an object but we can think of the function returned by <code class="highlighter-rouge">asyncActionCreator</code> to be an action as well<sup><a href="#citation-2">[2]</a></sup>. So when we dispatch our async action, redux/redux-thunk will execute the function in a context where <code class="highlighter-rouge">dispatch</code> is available.</p>
 
-<p>And that’s it. redux-thunk is basically a form of syntactic sugar to prevent having to pass <code class="highlighter-rouge">dispatch</code> around. To me, the biggest aesthetic benefit is that dispatching asyncrhonous and synchronous actions look the same with redux-thunk:</p>
+<p>And that’s it. redux-thunk is basically a form of syntactic sugar to prevent having to pass <code class="highlighter-rouge">dispatch</code> around. To me, the biggest aesthetic benefit is that dispatching asynchronous and synchronous actions look the same with redux-thunk:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">asyncActionCreator</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ACTION_PAYLOAD</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
@@ -191,8 +191,8 @@
   <li><a href="https://medium.com/@stowball/a-dummys-guide-to-redux-and-thunk-in-react-d8904a7005d3#.ffc3zyw1c" target="_blank">https://medium.com/@stowball/a-dummys-guide-to-redux-and-thunk-in-react-d8904a7005d3#.ffc3zyw1c</a></li>
 </ul>
 
-<p>[1] <a href="http://redux.js.org/docs/recipes/ServerRendering.html">http://redux.js.org/docs/recipes/ServerRendering.html</a> <a name="citation-1"></a><br />
-[2] I mean, technicallly, a JS function is an object but you know what I mean.<a name="citation-2"></a></p>
+<p>[1] <a name="citation-1" traget="_blank" href="http://redux.js.org/docs/recipes/ServerRendering.html">http://redux.js.org/docs/recipes/ServerRendering.html</a><br />
+[2] I mean, technically, a JS function is an object but you know what I mean.<a name="citation-2"></a></p>
 
   </div>
 
