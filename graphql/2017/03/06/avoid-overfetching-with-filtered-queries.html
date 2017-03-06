@@ -192,7 +192,7 @@
 
 <p>I also haven’t discussed GraphQL on other platforms, like Android and iOS. Typically, GraphQL queries are statically written and used to generate classes, allowing GraphQL to integrate well with each platform’s type system. This of course makes what we talked about above difficult. Unfortunately, I don’t have enough experience with GraphQL on mobile platforms so can’t really offer any useful thoughts here.</p>
 
-<p>Going back to REST though, we can achieve what we talked about pretty easily. We can set up our rest endpoint to return fields that is specified through query parameters: <code class="highlighter-rouge">GET /api/waterbottles/101?brand=1,price=1</code> would return the brand and the price for water bottle with id <code class="highlighter-rouge">101</code>.</p>
+<p>Going back to REST though, we can achieve what we talked about pretty easily. We can set up our rest endpoint to return fields that is specified through query parameters: <code class="highlighter-rouge">GET /api/waterbottles/101?brand=1&amp;price=1</code> would return the brand and the price for water bottle with id <code class="highlighter-rouge">101</code>.</p>
 
 <p>Given existing data for a water bottle, the endpoint string is easy to construct. In fact, most request JavaScript libraries allow query parameters to be specified using an object. A similar situation exists in Java and Objective-C/Swift land.</p>
 
