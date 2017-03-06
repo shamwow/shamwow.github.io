@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Avoiding Overfetching of Data Using &#39;Filtered&#39; Queries</title>
+  <meta name="description" content="GraphQL does a good job of making it easy to fetch only the data you need when making a specific request. A lot has been written about GraphQL and its benefi...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="https://shahmeer.co/graphql/2017/03/06/avoid-overfetching-with-filtered-queries.html">
+
+  <script type="text/javascript" src="/assets/js/main.js"></script>
+</head>
+
+
+  <body>
+
+    <header class="header" role="banner">
+
+  <div class="wrapper site-nav-wrapper">
+    <div class="site-nav_logo"><a href="/"><?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>Untitled</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g class="logo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M184.809173,81.5864678 L185.541299,69.9568299 C185.541299,69.9568299 185.548707,67.1778728 187.911773,69.6901516 C190.274839,72.2024305 257.717314,133.2967 259.424944,134.919745 C261.132574,136.542789 262.130883,137.566128 262.130883,140.232911 C262.130883,144.834916 261.895865,152.967311 261.895865,154.785299 C261.895865,155.4524 261.232612,155.821597 260.530819,155.282872 C259.829026,154.744148 257.820053,152.870846 257.820053,152.870846 C257.820053,152.870846 188.729599,90.672118 187.709805,89.7353739 C186.690011,88.7986297 185.284875,87.5030455 184.958069,85.9426009 C184.631264,84.3821563 184.809173,81.5864678 184.809173,81.5864678 Z" class="animated-logo_upper" fill="#FFFFFF"></path>
+        <path d="M219.048339,223.947705 L219.780464,212.318068 C219.780464,212.318068 219.787872,209.53911 222.150938,212.051389 C224.514004,214.563668 291.956479,275.657938 293.664109,277.280983 C295.371739,278.904027 296.370048,279.927365 296.370048,282.594148 C296.370048,287.196153 296.13503,295.328549 296.13503,297.146536 C296.13503,297.813638 295.471778,298.182835 294.769984,297.64411 C294.068191,297.105385 292.059218,295.232083 292.059218,295.232083 C292.059218,295.232083 222.968765,233.033356 221.94897,232.096612 C220.929176,231.159867 219.52404,229.864283 219.197235,228.303839 C218.870429,226.743394 219.048339,223.947705 219.048339,223.947705 Z" class="animated-logo_lower" fill="#FFFFFF"></path>
+        <path d="M184.048339,136.947705 L184.780464,125.318068 C184.780464,125.318068 184.787872,122.53911 187.150938,125.051389 C187.675151,125.608702 191.401989,129.048897 196.903386,134.083214 C211.046582,147.025624 272.132084,202.708359 285.467523,214.824972 C290.327948,219.241166 293.523049,222.148057 293.877998,222.485425 C295.585628,224.10847 296.583937,225.131808 296.583937,227.798591 C296.583937,232.400596 296.348919,240.532991 296.348919,242.350979 C296.348919,243.01808 295.685666,243.387277 294.983873,242.848552 C294.28208,242.309828 292.273107,240.436526 292.273107,240.436526 C292.273107,240.436526 287.545004,236.180048 280.544267,229.877295 C265.293625,216.147166 204.044141,160.501847 192.608014,150.199109 C189.226022,147.152293 187.120834,145.254479 186.94897,145.096612 C185.929176,144.159867 184.52404,142.864283 184.197235,141.303839 C183.870429,139.743394 184.048339,136.947705 184.048339,136.947705 Z" class="animated-logo_middle" fill="#FFFFFF"></path>
+    </g>
+</svg>
+</a></div>
+    <nav class="site-nav">
+      <a class="site-nav_page-link" target="_blank" href="https://github.com/shamwow">GitHub</a>
+      <a class="site-nav_page-link" target="_blank" href="https://ca.linkedin.com/pub/shahmeer-navid/41/a16/6b4">LinkedIn</a>
+      <a class="site-nav_page-link" target="_blank" href="mailto:shahmeernavid@gmail.com">Email</a>
+      <a class="site-nav_page-link" target="_blank" href="/assets/resume.pdf">Resume</a>
+    </nav>
+  </div>
+
+</header>
+
+
+    <main class="page-content">
+      <div class="wrapper">
+        <div class="about-header-wrapper">
+          <div class="about-header">
+            <a href="/">
+              <div class="about-header_main-logo"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 115 240" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <g class="logo" sketch:type="MSLayerGroup" fill-opacity="1.0" fill="#FFFFFF" fill-rule="evenodd">
+        <path d="M3.794,0.876 C2.137,-0.626 1.173,-0.13 1.124,1.856 C1.022,5.994 0.85,12.934 0.764,16.399 C0.732,17.692 1.096,18.85 1.81,19.498 C9.935,26.863 61.838,72.95 75.526,85.357 C77.682,87.312 77.874,86.681 77.896,84.211 C77.934,79.804 77.991,73.101 78.018,69.938 C78.027,68.838 77.522,67.704 76.585,66.854 C67.289,58.427 15.964,11.906 3.794,0.876 Z" class="logo_upper" sketch:type="MSShapeGroup"></path>
+        <path d="M111.099,209.105 C101.802,200.678 50.477,154.157 38.308,143.126 C36.651,141.624 35.687,142.12 35.638,144.106 C35.536,148.243 35.364,155.183 35.278,158.649 C35.246,159.942 35.61,161.1 36.324,161.748 C44.449,169.113 95.294,215.2 108.983,227.607 C111.139,229.562 112.388,228.931 112.41,226.461 C112.447,222.054 112.505,215.351 112.532,212.188 C112.541,211.089 112.036,209.955 111.099,209.105 L111.099,209.105 Z" class="logo_lower" sketch:type="MSShapeGroup"></path>
+        <path d="M111.099,153.841 C101.802,145.414 15.964,67.238 3.794,56.208 C2.137,54.706 1.172,55.203 1.124,57.188 C1.021,61.326 0.85,68.265 0.764,71.731 C0.732,73.024 1.096,74.182 1.81,74.829 C9.935,82.194 95.294,159.935 108.983,172.343 C111.139,174.298 112.388,173.667 112.409,171.197 C112.447,166.79 112.504,160.087 112.531,156.924 C112.541,155.825 112.036,154.691 111.099,153.841 L111.099,153.841 Z" class="logo_middle" sketch:type="MSShapeGroup"></path>
+    </g>
+</svg>
+</div>
+              <div class="about-header_slogan">
+                <h3 class="about-header_slogan_title">My name is Shahmeer</h3>
+                <span class="about-header_slogan_subtitle">I sometimes make things</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="post">
+  
+    <img class="post_header-image" src="/assets/img/post_headers/filtered-queries.svg">
+  
+
+  <div class="post_content">
+    <div class="post_meta">
+      <h2 class="post_meta_title">Avoiding Overfetching of Data Using &#39;Filtered&#39; Queries</h2>
+
+      <span class="post_meta_date">Mar 6, 2017</span>
+    </div>
+
+    <p>GraphQL does a good job of making it easy to fetch only the data you need when making a specific request. A lot has been written about GraphQL and its benefits so I won’t get too much into it. Basically, GraphQL queries make it dead simple to specify the data you want from an object.</p>
+
+<figure class="highlight"><pre><code class="language-graphql" data-lang="graphql"># An example GraphQL query fetching just the brand, capacity, and price for all water bottles that are blue.
+{
+  waterbottles(color: "blue") {
+    id
+    capacity
+    brand
+    price
+  }
+}</code></pre></figure>
+
+<p>Note that you could definitely achieve the same thing with a typical REST endpoint and query parameters.</p>
+
+<p>So GraphQL makes it easy to fetch only the data you want. Often times though, the data you want to fetch isn’t always the smallest amount of data you need to fetch. Take the screen shot from Amazon for example:</p>
+
+<p><img src="/assets/img/avoid_overfetching_filtered_queries/waterbottle-amazon.png" alt="Amazon water bottle search" /></p>
+
+<p>Here, we have a page with a series of water bottles along with their brands, capacity, and prices (simplified and among other things). When you click on one of the water bottles, the water bottle product page is opened, showing more information about the water bottle. Assuming we have a single page app, what usually ends up happening is that another request for the selected water bottle is made:</p>
+
+<figure class="highlight"><pre><code class="language-graphql" data-lang="graphql">{
+  waterbottle(id: 101) {
+    capacity
+    brand
+    price
+    description
+    ...WaterBottleReviews
+  }
+}</code></pre></figure>
+
+<p>We already had the capacity, brand, and price of this water bottle so it’s inefficient to query for it again. In this example, the amount of duplicated data is pretty small. But it’s not hard to imagine a scenario where we make a request for all the reviews of a water bottle despite already having this data in memory. This has the potential to use up a lot of unnecessary bandwidth.</p>
+
+<p>We can use a ‘filtered’ query to help reduce what we ask for.</p>
+
+<!-- read more -->
+
+<p>We can figure out which fields we don’t need by using our application state. If our water bottles are stored in memory, we can just compare against our queries.</p>
+
+<p>Our state could look something like:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="err">waterbottles:</span><span class="w"> </span><span class="err">{</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+
+    </span><span class="err">101:</span><span class="w"> </span><span class="err">{</span><span class="w">
+      </span><span class="err">id:</span><span class="w"> </span><span class="err">101,</span><span class="w">
+      </span><span class="err">capacity:</span><span class="w"> </span><span class="err">750,</span><span class="w">
+      </span><span class="err">brand:</span><span class="w"> </span><span class="err">'Camelback',</span><span class="w">
+      </span><span class="err">price:</span><span class="w"> </span><span class="err">25,</span><span class="w">
+      </span><span class="err">description:</span><span class="w"> </span><span class="err">null,</span><span class="w">
+      </span><span class="err">reviews:</span><span class="w"> </span><span class="err">null,</span><span class="w">
+    </span><span class="p">}</span><span class="err">,</span><span class="w">
+
+    </span><span class="err">...</span><span class="w">
+  </span><span class="err">},</span><span class="w">
+</span><span class="err">}</span></code></pre></figure>
+
+<p>So we know we already have capacity, brand, and price. Our query for the water bottle’s product page then only needs to be:</p>
+
+<figure class="highlight"><pre><code class="language-graphql" data-lang="graphql">{
+  waterbottle(id: 101) {
+    description
+    ...WaterBottleReviews
+  }
+}</code></pre></figure>
+
+<p>It turns out that Relay already does this!<sup><a href="#citation-1">[1]</a></sup> If you’re using GraphQL but not using Relay though, there’s a little more work involved. The approach that would work with most GraphQL clients would be to implement a query builder. The output of the query builder can then be passed into any client. For illustrative purposes, a very simplistic one in JavaScript might look like:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="cm">/*
+ * Example Input:
+ * {
+ *    brand: 1,
+ *    color: 1,
+ *    reviews: {
+ *      username: 1,
+ *      text: 1
+ *    },
+ *    price: 0
+ * }
+ *
+ * Example Output:
+ * {
+ *    brand
+ *    color
+ *    reviews: {
+ *      username
+ *      text
+ *    }
+ * }
+ *
+ * @param jsonQuery: Object - JSON used to build the GraphQL query.
+ * @returns String - The graphQL query string.
+ **/</span>
+<span class="kr">const</span> <span class="nx">QueryBuilder</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">jsonQuery</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">'{\n'</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="nx">of</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">jsonQuery</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">jsonQuery</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">jsonQuery</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">===</span> <span class="s1">'object'</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">output</span> <span class="o">+=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">key</span><span class="p">}</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">QueryBuilder</span><span class="p">(</span><span class="nx">jsonQuery</span><span class="p">[</span><span class="nx">key</span><span class="p">])}</span><span class="err">\</span><span class="nx">n</span><span class="err">`</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">jsonQuery</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
+      <span class="nx">output</span> <span class="o">+=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">key</span><span class="p">}</span><span class="err">\</span><span class="nx">n</span><span class="err">`</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">output</span> <span class="o">+</span> <span class="s1">'}'</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>The above code will take a JSON object and include any keys with truthy values in the GraphQL query generated. Of course, this doesn’t work completely as there are multiple GraphQL features, like variables and aliases, that aren’t accounted for. To come up with a full fledged query builder, we would need a way to encode these features in JSON.</p>
+
+<p>Because <code class="highlighter-rouge">jsonQuery</code> is a JavaScript object, we can easily diff it against any other JavaScript object, allowing us to perform our optimization. Again, there are some lingering questions, like “how would the diffing look like when the GraphQL query is fetching two different objects?”, but they should be solvable with a little bit of design work.</p>
+
+<p>Something to keep in mind is that both Relay and the approach above use dynamically generated queries but there are benefits to having static queries<sup><a href="#citation-2">[2]</a></sup>. GraphQL hasn’t really been around long enough so there doesn’t seem to be an accepted ‘good practice’.</p>
+
+<p>I also haven’t discussed GraphQL on other platforms, like Android and iOS. Typically, GraphQL queries are statically written and used to generate classes, allowing GraphQL to integrate well with each platform’s type system. This of course makes what we talked about above difficult. Unfortunately, I don’t have enough experience with GraphQL on mobile platforms so can’t really offer any useful thoughts here.</p>
+
+<p>Going back to REST though, we can achieve what we talked about pretty easily. We can set up our rest endpoint to return fields that is specified through query parameters: <code class="highlighter-rouge">GET /api/waterbottles/101?brand=1,price=1</code> would return the brand and the price for water bottle with id <code class="highlighter-rouge">101</code>.</p>
+
+<p>Given existing data for a water bottle, the endpoint string is easy to construct. In fact, most request JavaScript libraries allow query parameters to be specified using an object. A similar situation exists in Java and Objective-C/Swift land.</p>
+
+<p>So while I think the above optimization does have potential to save a lot of bandwidth, it’s not an easy win, especially if you’re using GraphQL without Relay. Definitely think about whether the performance gains are worth the added complexity before deciding to implement the above ideas.</p>
+
+<p>[1] <a name="citation-1" href="https://github.com/facebook/relay/blob/master/src/traversal/diffRelayQuery.js#L77" target="_blank">https://github.com/facebook/relay/blob/master/src/traversal/diffRelayQuery.js#L77</a>
+[2] <a name="citation-2" href="https://dev-blog.apollodata.com/5-benefits-of-static-graphql-queries-b7fa90b0b69a" target="_blank">https://dev-blog.apollodata.com/5-benefits-of-static-graphql-queries-b7fa90b0b69a</a></p>
+
+  </div>
+
+</div>
+
+      </div>
+    </main>
+
+  </body>
+
+</html>

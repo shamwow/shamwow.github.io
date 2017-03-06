@@ -70,6 +70,66 @@
   
     <div class="post-list_post post">
       
+        <a href="/graphql/2017/03/06/avoid-overfetching-with-filtered-queries.html"><img class="post_header-image" src="/assets/img/post_headers/filtered-queries.svg"></a>
+      
+
+      <div class="post_content">
+        <div class="post_meta">
+          <h2 class="post_meta_title--link">
+            <a href="/graphql/2017/03/06/avoid-overfetching-with-filtered-queries.html">Avoiding Overfetching of Data Using &#39;Filtered&#39; Queries</a>
+          </h2>
+
+          <span class="post_meta_date">Mar 6, 2017</span>
+        </div>
+
+        
+
+          <p>GraphQL does a good job of making it easy to fetch only the data you need when making a specific request. A lot has been written about GraphQL and its benefits so I won’t get too much into it. Basically, GraphQL queries make it dead simple to specify the data you want from an object.</p>
+
+<figure class="highlight"><pre><code class="language-graphql" data-lang="graphql"># An example GraphQL query fetching just the brand, capacity, and price for all water bottles that are blue.
+{
+  waterbottles(color: "blue") {
+    id
+    capacity
+    brand
+    price
+  }
+}</code></pre></figure>
+
+<p>Note that you could definitely achieve the same thing with a typical REST endpoint and query parameters.</p>
+
+<p>So GraphQL makes it easy to fetch only the data you want. Often times though, the data you want to fetch isn’t always the smallest amount of data you need to fetch. Take the screen shot from Amazon for example:</p>
+
+<p><img src="/assets/img/avoid_overfetching_filtered_queries/waterbottle-amazon.png" alt="Amazon water bottle search" /></p>
+
+<p>Here, we have a page with a series of water bottles along with their brands, capacity, and prices (simplified and among other things). When you click on one of the water bottles, the water bottle product page is opened, showing more information about the water bottle. Assuming we have a single page app, what usually ends up happening is that another request for the selected water bottle is made:</p>
+
+<figure class="highlight"><pre><code class="language-graphql" data-lang="graphql">{
+  waterbottle(id: 101) {
+    capacity
+    brand
+    price
+    description
+    ...WaterBottleReviews
+  }
+}</code></pre></figure>
+
+<p>We already had the capacity, brand, and price of this water bottle so it’s inefficient to query for it again. In this example, the amount of duplicated data is pretty small. But it’s not hard to imagine a scenario where we make a request for all the reviews of a water bottle despite already having this data in memory. This has the potential to use up a lot of unnecessary bandwidth.</p>
+
+<p>We can use a ‘filtered’ query to help reduce what we ask for.</p>
+
+
+
+          <span class="post-list_post_read-more">
+            <a class="button" href="/graphql/2017/03/06/avoid-overfetching-with-filtered-queries.html"> Read More</a>
+          </span>
+
+        
+      </div>
+    </div>
+  
+    <div class="post-list_post post">
+      
         <a href="/math/2017/02/02/graph-theory-and-computer-graphics.html"><img class="post_header-image" src="/assets/img/post_headers/graph-theory-and-comp-sci.svg"></a>
       
 
