@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="https://shahmeer.co/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="https://shahmeer.co/feed.xml" rel="self" type="application/atom+xml" /><link href="https://shahmeer.co/" rel="alternate" type="text/html" /><updated>2017-03-07T01:23:55+08:00</updated><id>https://shahmeer.co//</id><title type="html">Shahmeer Navid</title><subtitle>Shahmeer Navid - Software Engineer
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="https://shahmeer.co/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="https://shahmeer.co/feed.xml" rel="self" type="application/atom+xml" /><link href="https://shahmeer.co/" rel="alternate" type="text/html" /><updated>2017-03-07T01:28:03+08:00</updated><id>https://shahmeer.co//</id><title type="html">Shahmeer Navid</title><subtitle>Shahmeer Navid - Software Engineer
 </subtitle><entry><title type="html">Avoiding Overfetching of Data Using ‘Filtered’ Queries</title><link href="https://shahmeer.co/graphql/2017/03/06/avoid-overfetching-with-filtered-queries.html" rel="alternate" type="text/html" title="Avoiding Overfetching of Data Using 'Filtered' Queries" /><published>2017-03-06T21:43:41+08:00</published><updated>2017-03-06T21:43:41+08:00</updated><id>https://shahmeer.co/graphql/2017/03/06/avoid-overfetching-with-filtered-queries</id><content type="html" xml:base="https://shahmeer.co/graphql/2017/03/06/avoid-overfetching-with-filtered-queries.html">&lt;p&gt;GraphQL does a good job of making it easy to fetch only the data you need when making a specific request. A lot has been written about GraphQL and its benefits so I won’t get too much into it. Basically, GraphQL queries make it dead simple to specify the data you want from an object.&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-graphql&quot; data-lang=&quot;graphql&quot;&gt;# An example GraphQL query fetching just the brand, capacity, and price for all water bottles that are blue.
@@ -39,22 +39,22 @@
 
 &lt;p&gt;Our state could look something like:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;waterbottles:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{
+  waterbottles: {
+    ...
 
-    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;101:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;id:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;101,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;capacity:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;750,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;brand:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'Camelback',&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;price:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;25,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;description:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;null,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;reviews:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;null,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    101: {
+      id: 101,
+      capacity: 750,
+      brand: 'Camelback',
+      price: 25,
+      description: null,
+      reviews: null,
+    },
 
-    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+    ...
+  },
+}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;So we know we already have capacity, brand, and price. Our query for the water bottle’s product page then only needs to be:&lt;/p&gt;
 
@@ -119,7 +119,7 @@
 
 &lt;p&gt;So while I think the above optimization does have potential to save a lot of bandwidth, it’s not an easy win, especially if you’re using GraphQL without Relay. Definitely think about whether the performance gains are worth the added complexity before deciding to implement the above ideas.&lt;/p&gt;
 
-&lt;p&gt;[1] &lt;a name=&quot;citation-1&quot; href=&quot;https://github.com/facebook/relay/blob/master/src/traversal/diffRelayQuery.js#L77&quot; target=&quot;_blank&quot;&gt;https://github.com/facebook/relay/blob/master/src/traversal/diffRelayQuery.js#L77&lt;/a&gt;
+&lt;p&gt;[1] &lt;a name=&quot;citation-1&quot; href=&quot;https://github.com/facebook/relay/blob/master/src/traversal/diffRelayQuery.js#L77&quot; target=&quot;_blank&quot;&gt;https://github.com/facebook/relay/blob/master/src/traversal/diffRelayQuery.js#L77&lt;/a&gt;&lt;br /&gt;
 [2] &lt;a name=&quot;citation-2&quot; href=&quot;https://dev-blog.apollodata.com/5-benefits-of-static-graphql-queries-b7fa90b0b69a&quot; target=&quot;_blank&quot;&gt;https://dev-blog.apollodata.com/5-benefits-of-static-graphql-queries-b7fa90b0b69a&lt;/a&gt;&lt;/p&gt;</content><summary type="html">GraphQL does a good job of making it easy to fetch only the data you need when making a specific request. A lot has been written about GraphQL and its benefits so I won’t get too much into it. Basically, GraphQL queries make it dead simple to specify the data you want from an object.
 
 # An example GraphQL query fetching just the brand, capacity, and price for all water bottles that are blue.

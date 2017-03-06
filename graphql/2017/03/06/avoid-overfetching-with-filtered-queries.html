@@ -118,22 +118,22 @@
 
 <p>Our state could look something like:</p>
 
-<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="err">waterbottles:</span><span class="w"> </span><span class="err">{</span><span class="w">
-    </span><span class="err">...</span><span class="w">
+<figure class="highlight"><pre><code class="language-text" data-lang="text">{
+  waterbottles: {
+    ...
 
-    </span><span class="err">101:</span><span class="w"> </span><span class="err">{</span><span class="w">
-      </span><span class="err">id:</span><span class="w"> </span><span class="err">101,</span><span class="w">
-      </span><span class="err">capacity:</span><span class="w"> </span><span class="err">750,</span><span class="w">
-      </span><span class="err">brand:</span><span class="w"> </span><span class="err">'Camelback',</span><span class="w">
-      </span><span class="err">price:</span><span class="w"> </span><span class="err">25,</span><span class="w">
-      </span><span class="err">description:</span><span class="w"> </span><span class="err">null,</span><span class="w">
-      </span><span class="err">reviews:</span><span class="w"> </span><span class="err">null,</span><span class="w">
-    </span><span class="p">}</span><span class="err">,</span><span class="w">
+    101: {
+      id: 101,
+      capacity: 750,
+      brand: 'Camelback',
+      price: 25,
+      description: null,
+      reviews: null,
+    },
 
-    </span><span class="err">...</span><span class="w">
-  </span><span class="err">},</span><span class="w">
-</span><span class="err">}</span></code></pre></figure>
+    ...
+  },
+}</code></pre></figure>
 
 <p>So we know we already have capacity, brand, and price. Our query for the water bottle’s product page then only needs to be:</p>
 
@@ -198,7 +198,7 @@
 
 <p>So while I think the above optimization does have potential to save a lot of bandwidth, it’s not an easy win, especially if you’re using GraphQL without Relay. Definitely think about whether the performance gains are worth the added complexity before deciding to implement the above ideas.</p>
 
-<p>[1] <a name="citation-1" href="https://github.com/facebook/relay/blob/master/src/traversal/diffRelayQuery.js#L77" target="_blank">https://github.com/facebook/relay/blob/master/src/traversal/diffRelayQuery.js#L77</a>
+<p>[1] <a name="citation-1" href="https://github.com/facebook/relay/blob/master/src/traversal/diffRelayQuery.js#L77" target="_blank">https://github.com/facebook/relay/blob/master/src/traversal/diffRelayQuery.js#L77</a><br />
 [2] <a name="citation-2" href="https://dev-blog.apollodata.com/5-benefits-of-static-graphql-queries-b7fa90b0b69a" target="_blank">https://dev-blog.apollodata.com/5-benefits-of-static-graphql-queries-b7fa90b0b69a</a></p>
 
   </div>
