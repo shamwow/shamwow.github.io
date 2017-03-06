@@ -186,7 +186,7 @@
 
 <p>The above code will take a JSON object and include any keys with truthy values in the GraphQL query generated. Of course, this doesn’t work completely as there are multiple GraphQL features, like variables and aliases, that aren’t accounted for. To come up with a full fledged query builder, we would need a way to encode these features in JSON.</p>
 
-<p>Because <code class="highlighter-rouge">jsonQuery</code> is a JavaScript object, we can easily diff it against any other JavaScript object, allowing us to perform our optimization. Again, there are some lingering questions, like “how would the diffing look like when the GraphQL query is fetching two different objects?”, but they should be solvable with a little bit of design work.</p>
+<p>Because <code class="highlighter-rouge">jsonQuery</code> is a JavaScript object, we can easily diff it against any other JavaScript object, allowing us to perform our optimization. Again, there are some lingering questions, like “how would the diffing look like when the GraphQL query is fetching two different objects?”. These should be solvable with a little bit of design work.</p>
 
 <p>Something to keep in mind is that both Relay and the approach above use dynamically generated queries but there are benefits to having static queries<sup><a href="#citation-2">[2]</a></sup>. GraphQL hasn’t really been around long enough so there doesn’t seem to be an accepted ‘good practice’.</p>
 
