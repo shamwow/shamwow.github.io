@@ -86,7 +86,7 @@
 
 <!-- read more -->
 
-<p>Say Shirley goes to someone else’s profile but then returns back to Kevin’s. It would be poor UX if our SPA made another request for Kevin’s data. So, typically, data from requests is cached by the client. If you’re using REST, your might have a map of urls to responses (which might actually be unneceSPAry because the browser might actually do this caching for you). If you’re using Relay and GraphQL you’ll have a normalized cache of response objects<sup><a href="#citation-2">[2]</a></sup>.</p>
+<p>Say Shirley goes to someone else’s profile but then returns back to Kevin’s. It would be poor UX if our SPA made another request for Kevin’s data. So, typically, data from requests is cached by the client. If you’re using REST, your might have a map of urls to responses (which might actually be unnecessary because the browser might actually do this caching for you). If you’re using Relay and GraphQL you’ll have a normalized cache of response objects<sup><a href="#citation-2">[2]</a></sup>.</p>
 
 <p>Caching is great but it introduces the problem of staleness. What if by the time Shirley went back to Kevin’s profile, Kevin changed his display name to ‘Kevin da Great’? Because Kevin’s data is cached it never gets updated until Shirley refreshes the page.</p>
 
@@ -102,13 +102,13 @@
     <p>This is actually similar to what the browser does if you have a multi page app. Hitting the back button loads the page from cache, which is why it’s usually so quick.</p>
   </li>
   <li>
-    <p>Have the server tell us when something has been updated. This might be complicated to implement though. We could subscribe to updates on particular objects through something like postgres triggers<sup><a href="#citation-3">[3]</a></sup>. This works fine when we update objects directly but updates often happen indirectly. For example, if Kevin adds a photo his user object doesn’t get updated. It’s easy to see how this can  quickly increase in complexity.</p>
+    <p>Have the server tell us when something has been updated. This might be complicated to implement though. We could subscribe to updates on particular objects through something like postgres triggers<sup><a href="#citation-3">[3]</a></sup>. This works fine when we update objects directly but updates often happen indirectly. For example, if Kevin adds a photo his user object doesn’t get updated, a new photos object is added that has a foreign key reference to Kevin. It’s easy to see how this can quickly increase in complexity.</p>
 
-    <p>On top of that, there’s the issue of scalability. Obviously polling isn’t going to work - we might as well have just made a full request. So whether you end up using websockets or something else, your server will need to maintain a long lived connection with the client. The number of clients we can support becomes limited.</p>
+    <p>On top of that, there’s the issue of scalability. Obviously polling isn’t going to work - we might as well have just made a full request. Some sort of long lived connection is probably the way to go. Whether you end up using websockets or something else, your server will need to maintain a long lived connection with the client. The number of clients we can support becomes limited.</p>
   </li>
 </ol>
 
-<p>So which solution do we pick? Approach 1 doesn’t really solve our UX problem and approach 3 introduces a ton of complexity and cost. From the 3, approach number 2 looks the most attractive.</p>
+<p>So which solution do we pick? Approach 1 doesn’t really solve the UX problem and approach 3 introduces a ton of complexity and cost. From the 3, approach number 2 looks the most attractive.</p>
 
 <p>There’s actually one other thing we can do - forget about single page and go back to multi page apps. Just some of the benefits: we get caching for free since it gets handled by the browser; it reduces a lot of UI work needed to create various loading screens - something that may actually give your app a better impression<sup><a href="#citation-4">[4]</a></sup>; in a mobile centric world, it’s actually better to have a thin client and a thick server than the other way around; multi page apps work better for people with JavaScript disabled; etc, etc.</p>
 
