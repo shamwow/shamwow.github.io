@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Avoiding single page application cache staleness</title>
+  <meta name="description" content="tldr: If you care about cache staleness, consider creating a multi page application instead. There are a ton of frameworks and libraries out there that addre...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="https://shahmeer.co/blog/avoiding-single-page-application-cache-staleness.html">
+
+  <script type="text/javascript" src="/assets/js/main.js"></script>
+</head>
+
+
+  <body>
+
+    <header class="header" role="banner">
+
+  <div class="wrapper site-nav-wrapper">
+    <div class="site-nav_logo"><a href="/"><?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>Untitled</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g class="logo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M184.809173,81.5864678 L185.541299,69.9568299 C185.541299,69.9568299 185.548707,67.1778728 187.911773,69.6901516 C190.274839,72.2024305 257.717314,133.2967 259.424944,134.919745 C261.132574,136.542789 262.130883,137.566128 262.130883,140.232911 C262.130883,144.834916 261.895865,152.967311 261.895865,154.785299 C261.895865,155.4524 261.232612,155.821597 260.530819,155.282872 C259.829026,154.744148 257.820053,152.870846 257.820053,152.870846 C257.820053,152.870846 188.729599,90.672118 187.709805,89.7353739 C186.690011,88.7986297 185.284875,87.5030455 184.958069,85.9426009 C184.631264,84.3821563 184.809173,81.5864678 184.809173,81.5864678 Z" class="animated-logo_upper" fill="#FFFFFF"></path>
+        <path d="M219.048339,223.947705 L219.780464,212.318068 C219.780464,212.318068 219.787872,209.53911 222.150938,212.051389 C224.514004,214.563668 291.956479,275.657938 293.664109,277.280983 C295.371739,278.904027 296.370048,279.927365 296.370048,282.594148 C296.370048,287.196153 296.13503,295.328549 296.13503,297.146536 C296.13503,297.813638 295.471778,298.182835 294.769984,297.64411 C294.068191,297.105385 292.059218,295.232083 292.059218,295.232083 C292.059218,295.232083 222.968765,233.033356 221.94897,232.096612 C220.929176,231.159867 219.52404,229.864283 219.197235,228.303839 C218.870429,226.743394 219.048339,223.947705 219.048339,223.947705 Z" class="animated-logo_lower" fill="#FFFFFF"></path>
+        <path d="M184.048339,136.947705 L184.780464,125.318068 C184.780464,125.318068 184.787872,122.53911 187.150938,125.051389 C187.675151,125.608702 191.401989,129.048897 196.903386,134.083214 C211.046582,147.025624 272.132084,202.708359 285.467523,214.824972 C290.327948,219.241166 293.523049,222.148057 293.877998,222.485425 C295.585628,224.10847 296.583937,225.131808 296.583937,227.798591 C296.583937,232.400596 296.348919,240.532991 296.348919,242.350979 C296.348919,243.01808 295.685666,243.387277 294.983873,242.848552 C294.28208,242.309828 292.273107,240.436526 292.273107,240.436526 C292.273107,240.436526 287.545004,236.180048 280.544267,229.877295 C265.293625,216.147166 204.044141,160.501847 192.608014,150.199109 C189.226022,147.152293 187.120834,145.254479 186.94897,145.096612 C185.929176,144.159867 184.52404,142.864283 184.197235,141.303839 C183.870429,139.743394 184.048339,136.947705 184.048339,136.947705 Z" class="animated-logo_middle" fill="#FFFFFF"></path>
+    </g>
+</svg>
+</a></div>
+    <nav class="site-nav">
+      <a class="site-nav_page-link" target="_blank" href="https://github.com/shamwow">GitHub</a>
+      <a class="site-nav_page-link" target="_blank" href="https://ca.linkedin.com/pub/shahmeer-navid/41/a16/6b4">LinkedIn</a>
+      <a class="site-nav_page-link" target="_blank" href="mailto:shahmeernavid@gmail.com">Email</a>
+      <a class="site-nav_page-link" target="_blank" href="/assets/resume.pdf">Resume</a>
+    </nav>
+  </div>
+
+</header>
+
+
+    <main class="page-content">
+      <div class="wrapper">
+        <div class="about-header-wrapper">
+          <div class="about-header">
+            <a href="/">
+              <div class="about-header_main-logo"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 115 240" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <g class="logo" sketch:type="MSLayerGroup" fill-opacity="1.0" fill="#FFFFFF" fill-rule="evenodd">
+        <path d="M3.794,0.876 C2.137,-0.626 1.173,-0.13 1.124,1.856 C1.022,5.994 0.85,12.934 0.764,16.399 C0.732,17.692 1.096,18.85 1.81,19.498 C9.935,26.863 61.838,72.95 75.526,85.357 C77.682,87.312 77.874,86.681 77.896,84.211 C77.934,79.804 77.991,73.101 78.018,69.938 C78.027,68.838 77.522,67.704 76.585,66.854 C67.289,58.427 15.964,11.906 3.794,0.876 Z" class="logo_upper" sketch:type="MSShapeGroup"></path>
+        <path d="M111.099,209.105 C101.802,200.678 50.477,154.157 38.308,143.126 C36.651,141.624 35.687,142.12 35.638,144.106 C35.536,148.243 35.364,155.183 35.278,158.649 C35.246,159.942 35.61,161.1 36.324,161.748 C44.449,169.113 95.294,215.2 108.983,227.607 C111.139,229.562 112.388,228.931 112.41,226.461 C112.447,222.054 112.505,215.351 112.532,212.188 C112.541,211.089 112.036,209.955 111.099,209.105 L111.099,209.105 Z" class="logo_lower" sketch:type="MSShapeGroup"></path>
+        <path d="M111.099,153.841 C101.802,145.414 15.964,67.238 3.794,56.208 C2.137,54.706 1.172,55.203 1.124,57.188 C1.021,61.326 0.85,68.265 0.764,71.731 C0.732,73.024 1.096,74.182 1.81,74.829 C9.935,82.194 95.294,159.935 108.983,172.343 C111.139,174.298 112.388,173.667 112.409,171.197 C112.447,166.79 112.504,160.087 112.531,156.924 C112.541,155.825 112.036,154.691 111.099,153.841 L111.099,153.841 Z" class="logo_middle" sketch:type="MSShapeGroup"></path>
+    </g>
+</svg>
+</div>
+              <div class="about-header_slogan">
+                <h3 class="about-header_slogan_title">My name is Shahmeer</h3>
+                <span class="about-header_slogan_subtitle">I sometimes make things</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="post">
+  
+    <div class="post_header-image" style="background-image: url('/assets/img/post_headers/avoiding-cache-staleness.svg')"></div>
+  
+
+  <div class="post_content">
+    <div class="post_meta">
+      <h2 class="post_meta_title">Avoiding single page application cache staleness</h2>
+
+      <span class="post_meta_date">May 4, 2017</span>
+    </div>
+
+    <p>tldr: If you care about cache staleness, consider creating a multi page application instead.</p>
+
+<p>There are a ton of frameworks and libraries out there that address different aspects of single page application (SPA) development. However, when to update a client’s cache seems to get neglected<sup><a href="#citation-1">[1]</a></sup>.</p>
+
+<!-- read more -->
+
+<p>The problem I’m referring to is probably best illustrated with an example. With a SPA, the client typically makes one request to the server for the HTML of a page. Other pages are generated dynamically through JavaScript and the data from an AJAX request. So if Shirley visits the home page of a SPA and then she clicks on a link to view Kevin’s profile, an API request is sent off to the server to retrieve data related to Kevin. This data is then used to generated HTML which will make up Kevin’s profile page.</p>
+
+<p>Say Shirley goes to someone else’s profile but then returns back to Kevin’s. It would be poor UX if our SPA made another request for Kevin’s data. So, typically, data from requests is cached by the client. If you’re using REST, your might have a map of urls to responses (which might actually be unneceSPAry because the browser might actually do this caching for you). If you’re using Relay and GraphQL you’ll have a normalized cache of response objects<sup><a href="#citation-2">[2]</a></sup>.</p>
+
+<p>Caching is great but it introduces the problem of staleness. What if by the time Shirley went back to Kevin’s profile, Kevin changed his display name to ‘Kevin da Great’? Because Kevin’s data is cached it never gets updated until Shirley refreshes the page.</p>
+
+<p>In some cases, this may not be a problem. But let’s assume staleness is something we want to solve. There are a couple of ways to go about it:</p>
+
+<ol>
+  <li>
+    <p>Always make an AJAX request each time we visit a profile page. This still gives us poor UX though.</p>
+  </li>
+  <li>
+    <p>Have a time to live (TTL) for the items in our cache. A good value for the TTL would depend on what type of application you have. For most use cases, it would be pretty small since the UX problem we’re trying to avoid usually occurs when the user quickly goes back to a page that they’ve already loaded.</p>
+
+    <p>This is actually similar to what the browser does if you have a multi page app. Hitting the back button loads the page from cache, which is why it’s usually so quick.</p>
+  </li>
+  <li>
+    <p>Have the server tell us when something has been updated. This might be complicated to implement though. We could subscribe to updates on particular objects through something like postgres triggers<sup><a href="#citation-3">[3]</a></sup>. This works fine when we update objects directly but updates often happen indirectly. For example, if Kevin adds a photo his user object doesn’t get updated. It’s easy to see how this can  quickly increase in complexity.</p>
+
+    <p>On top of that, there’s the issue of scalability. Obviously polling isn’t going to work - we might as well have just made a full request. So whether you end up using websockets or something else, your server will need to maintain a long lived connection with the client. The number of clients we can support becomes limited.</p>
+  </li>
+</ol>
+
+<p>So which solution do we pick? Approach 1 doesn’t really solve our UX problem and approach 3 introduces a ton of complexity and cost. From the 3, approach number 2 looks the most attractive.</p>
+
+<p>There’s actually one other thing we can do - forget about single page and go back to multi page apps. Just some of the benefits: we get caching for free since it gets handled by the browser; it reduces a lot of UI work needed to create various loading screens - something that may actually give your app a better impression<sup><a href="#citation-4">[4]</a></sup>; in a mobile centric world, it’s actually better to have a thin client and a thick server than the other way around; multi page apps work better for people with JavaScript disabled; etc, etc.</p>
+
+<p>To be clear, when I say multi page apps, I’m referring to applications whose main routing logic is handled by the server but this doesn’t mean that everything needs to be a separate page. If Shirley wants to look at Kevin’s pictures, it doesn’t make since to load up a separate page for each picture. So this part of the app should be handled with AJAX. Basically, use good judgment.</p>
+
+<hr />
+
+<p>[1] Based on me not being able to find good information on the topic.<br />
+[2] <a name="citation-2" target="_blank" href="https://facebook.github.io/relay/docs/thinking-in-graphql.html#client-caching">https://facebook.github.io/relay/docs/thinking-in-graphql.html#client-caching</a><br />
+[3] <a name="citation-3" target="_blank" href="https://en.wikipedia.org/wiki/Comet_(programming) ">https://en.wikipedia.org/wiki/Comet_(programming)</a><br />
+[4] I’ve noticed that a loading screen gives the impression that the app is slow but waiting for a page to load in a multi page app gives the impression that the internet connection is slow<a name="citation-4"></a><br /></p>
+
+  </div>
+
+</div>
+
+      </div>
+    </main>
+
+
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-47433213-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+
+</html>

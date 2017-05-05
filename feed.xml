@@ -1,5 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="https://shahmeer.co/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="https://shahmeer.co/feed.xml" rel="self" type="application/atom+xml" /><link href="https://shahmeer.co/" rel="alternate" type="text/html" /><updated>2017-05-04T12:05:43-04:00</updated><id>https://shahmeer.co//</id><title type="html">Shahmeer Navid</title><subtitle>Shahmeer Navid - Software Engineer
-</subtitle><entry><title type="html">Avoiding overfetching of data using ‘filtered’ queries</title><link href="https://shahmeer.co/blog/avoid-overfetching-with-filtered-queries.html" rel="alternate" type="text/html" title="Avoiding overfetching of data using 'filtered' queries" /><published>2017-03-06T08:43:41-05:00</published><updated>2017-03-06T08:43:41-05:00</updated><id>https://shahmeer.co/blog/avoid-overfetching-with-filtered-queries</id><content type="html" xml:base="https://shahmeer.co/blog/avoid-overfetching-with-filtered-queries.html">&lt;p&gt;Updated on May 1st, 2017.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="https://shahmeer.co/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="https://shahmeer.co/feed.xml" rel="self" type="application/atom+xml" /><link href="https://shahmeer.co/" rel="alternate" type="text/html" /><updated>2017-05-05T15:42:48-04:00</updated><id>https://shahmeer.co//</id><title type="html">Shahmeer Navid</title><subtitle>Shahmeer Navid - Software Engineer
+</subtitle><entry><title type="html">Avoiding single page application cache staleness</title><link href="https://shahmeer.co/blog/avoiding-single-page-application-cache-staleness.html" rel="alternate" type="text/html" title="Avoiding single page application cache staleness" /><published>2017-05-04T09:43:41-04:00</published><updated>2017-05-04T09:43:41-04:00</updated><id>https://shahmeer.co/blog/avoiding-single-page-application-cache-staleness</id><content type="html" xml:base="https://shahmeer.co/blog/avoiding-single-page-application-cache-staleness.html">&lt;p&gt;tldr: If you care about cache staleness, consider creating a multi page application instead.&lt;/p&gt;
+
+&lt;p&gt;There are a ton of frameworks and libraries out there that address different aspects of single page application (SPA) development. However, when to update a client’s cache seems to get neglected&lt;sup&gt;&lt;a href=&quot;#citation-1&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;!-- read more --&gt;
+
+&lt;p&gt;The problem I’m referring to is probably best illustrated with an example. With a SPA, the client typically makes one request to the server for the HTML of a page. Other pages are generated dynamically through JavaScript and the data from an AJAX request. So if Shirley visits the home page of a SPA and then she clicks on a link to view Kevin’s profile, an API request is sent off to the server to retrieve data related to Kevin. This data is then used to generated HTML which will make up Kevin’s profile page.&lt;/p&gt;
+
+&lt;p&gt;Say Shirley goes to someone else’s profile but then returns back to Kevin’s. It would be poor UX if our SPA made another request for Kevin’s data. So, typically, data from requests is cached by the client. If you’re using REST, your might have a map of urls to responses (which might actually be unneceSPAry because the browser might actually do this caching for you). If you’re using Relay and GraphQL you’ll have a normalized cache of response objects&lt;sup&gt;&lt;a href=&quot;#citation-2&quot;&gt;[2]&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;Caching is great but it introduces the problem of staleness. What if by the time Shirley went back to Kevin’s profile, Kevin changed his display name to ‘Kevin da Great’? Because Kevin’s data is cached it never gets updated until Shirley refreshes the page.&lt;/p&gt;
+
+&lt;p&gt;In some cases, this may not be a problem. But let’s assume staleness is something we want to solve. There are a couple of ways to go about it:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Always make an AJAX request each time we visit a profile page. This still gives us poor UX though.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Have a time to live (TTL) for the items in our cache. A good value for the TTL would depend on what type of application you have. For most use cases, it would be pretty small since the UX problem we’re trying to avoid usually occurs when the user quickly goes back to a page that they’ve already loaded.&lt;/p&gt;
+
+    &lt;p&gt;This is actually similar to what the browser does if you have a multi page app. Hitting the back button loads the page from cache, which is why it’s usually so quick.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Have the server tell us when something has been updated. This might be complicated to implement though. We could subscribe to updates on particular objects through something like postgres triggers&lt;sup&gt;&lt;a href=&quot;#citation-3&quot;&gt;[3]&lt;/a&gt;&lt;/sup&gt;. This works fine when we update objects directly but updates often happen indirectly. For example, if Kevin adds a photo his user object doesn’t get updated. It’s easy to see how this can  quickly increase in complexity.&lt;/p&gt;
+
+    &lt;p&gt;On top of that, there’s the issue of scalability. Obviously polling isn’t going to work - we might as well have just made a full request. So whether you end up using websockets or something else, your server will need to maintain a long lived connection with the client. The number of clients we can support becomes limited.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;So which solution do we pick? Approach 1 doesn’t really solve our UX problem and approach 3 introduces a ton of complexity and cost. From the 3, approach number 2 looks the most attractive.&lt;/p&gt;
+
+&lt;p&gt;There’s actually one other thing we can do - forget about single page and go back to multi page apps. Just some of the benefits: we get caching for free since it gets handled by the browser; it reduces a lot of UI work needed to create various loading screens - something that may actually give your app a better impression&lt;sup&gt;&lt;a href=&quot;#citation-4&quot;&gt;[4]&lt;/a&gt;&lt;/sup&gt;; in a mobile centric world, it’s actually better to have a thin client and a thick server than the other way around; multi page apps work better for people with JavaScript disabled; etc, etc.&lt;/p&gt;
+
+&lt;p&gt;To be clear, when I say multi page apps, I’m referring to applications whose main routing logic is handled by the server but this doesn’t mean that everything needs to be a separate page. If Shirley wants to look at Kevin’s pictures, it doesn’t make since to load up a separate page for each picture. So this part of the app should be handled with AJAX. Basically, use good judgment.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;[1] Based on me not being able to find good information on the topic.&lt;br /&gt;
+[2] &lt;a name=&quot;citation-2&quot; target=&quot;_blank&quot; href=&quot;https://facebook.github.io/relay/docs/thinking-in-graphql.html#client-caching&quot;&gt;https://facebook.github.io/relay/docs/thinking-in-graphql.html#client-caching&lt;/a&gt;&lt;br /&gt;
+[3] &lt;a name=&quot;citation-3&quot; target=&quot;_blank&quot; href=&quot;https://en.wikipedia.org/wiki/Comet_(programming) &quot;&gt;https://en.wikipedia.org/wiki/Comet_(programming)&lt;/a&gt;&lt;br /&gt;
+[4] I’ve noticed that a loading screen gives the impression that the app is slow but waiting for a page to load in a multi page app gives the impression that the internet connection is slow&lt;a name=&quot;citation-4&quot;&gt;&lt;/a&gt;&lt;br /&gt;&lt;/p&gt;</content><summary type="html">tldr: If you care about cache staleness, consider creating a multi page application instead.
+
+There are a ton of frameworks and libraries out there that address different aspects of single page application (SPA) development. However, when to update a client’s cache seems to get neglected[1].</summary></entry><entry><title type="html">Avoiding overfetching of data using ‘filtered’ queries</title><link href="https://shahmeer.co/blog/avoid-overfetching-with-filtered-queries.html" rel="alternate" type="text/html" title="Avoiding overfetching of data using 'filtered' queries" /><published>2017-03-06T08:43:41-05:00</published><updated>2017-03-06T08:43:41-05:00</updated><id>https://shahmeer.co/blog/avoid-overfetching-with-filtered-queries</id><content type="html" xml:base="https://shahmeer.co/blog/avoid-overfetching-with-filtered-queries.html">&lt;p&gt;Updated on May 1st, 2017.&lt;/p&gt;
 
 &lt;p&gt;GraphQL does a good job of making it easy to fetch only the data you need when making a specific request. A lot has been written about GraphQL and its benefits so I won’t get too much into it. Basically, GraphQL queries make it dead simple to specify the data you want from an object.&lt;/p&gt;
 
@@ -118,6 +161,8 @@
 &lt;p&gt;Given existing data for a water bottle, the endpoint string is easy to construct. In fact, most request JavaScript libraries allow query parameters to be specified using an object. A similar situation exists in Java and Objective-C/Swift land.&lt;/p&gt;
 
 &lt;p&gt;Some notes. If you’re using GraphQL (Relay or not), strongly consider static queries&lt;sup&gt;&lt;a href=&quot;#citation-3&quot;&gt;[3]&lt;/a&gt;&lt;/sup&gt;. Even if you don’t use Relay, you can still precompile these and have your request payload just be an identifier rather than sending up the entire GraphQL query. You can also optimize the amount of data you fetch by having different static queries and doing something similar to Relay’s &lt;code class=&quot;highlighter-rouge&quot;&gt;RefetchContainer&lt;/code&gt;. Regardless though, in almost all cases sending along some more data with a request isn’t going to be the main bottleneck. Something like actually initiating the request will be. So if you’re going to make a a request for data, sending along some more probably won’t hurt performance too much. This can obviously differ on a case by case basis so, as with everything, understand your situation before taking action.&lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;p&gt;[1] &lt;a name=&quot;citation-1&quot; href=&quot;https://github.com/facebook/relay/blob/master/packages/react-relay/classic/traversal/diffRelayQuery.js#L77&quot; target=&quot;_blank&quot;&gt;https://github.com/facebook/relay/blob/master/packages/react-relay/classic/traversal/diffRelayQuery.js#L77&lt;/a&gt;&lt;br /&gt;
 [2] &lt;a name=&quot;citation-2&quot; href=&quot;https://facebook.github.io/relay/docs/refetch-container.html&quot; target=&quot;_blank&quot;&gt;https://facebook.github.io/relay/docs/refetch-container.html&lt;/a&gt;&lt;br /&gt;
@@ -255,6 +300,8 @@ v7_x v7_y v7_z&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;There are a couple of things I didn’t touch on here. For example, I talked about triangulations assuming we already had one. What if we’re given an arbitrary polygon and have to compute the triangulation? How many triangulations exist for a polygon and so all their corresponding dual graphs contain Hamiltonian paths? If you’re interested, these questions and more are discussed in &lt;a traget=&quot;_blank&quot; href=&quot;https://www.palfrader.org/research/misc/2011-tristrips.pdf&quot;&gt;this paper&lt;/a&gt;.&lt;/p&gt;
 
+&lt;hr /&gt;
+
 &lt;p&gt;[1] &lt;a name=&quot;citation-1&quot; traget=&quot;_blank&quot; href=&quot;http://hacksoflife.blogspot.sg/2010/01/to-strip-or-not-to-strip.html&quot;&gt;http://hacksoflife.blogspot.sg/2010/01/to-strip-or-not-to-strip.html&lt;/a&gt;&lt;br /&gt;
 [2] &lt;a name=&quot;citation-2&quot; traget=&quot;_blank&quot; href=&quot;https://en.wikipedia.org/wiki/Hamiltonian_path#Bondy.E2.80.93Chv.C3.A1tal_theorem&quot;&gt;https://en.wikipedia.org/wiki/Hamiltonian_path&lt;/a&gt;&lt;br /&gt;
 [3] &lt;a name=&quot;citation-3&quot; traget=&quot;_blank&quot; href=&quot;http://www.rose-hulman.edu/mathjournal/archives/2000/vol1-n1/paper4/v1n1-4pd.PDF&quot;&gt;http://www.rose-hulman.edu&lt;/a&gt;&lt;br /&gt;
@@ -372,6 +419,8 @@ Most of graph theory’s computer science applications seem to be related to fin
   &lt;li&gt;&lt;a href=&quot;https://github.com/gaearon/redux-thunk&quot; target=&quot;_blank&quot;&gt;https://github.com/gaearon/redux-thunk&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://medium.com/@stowball/a-dummys-guide-to-redux-and-thunk-in-react-d8904a7005d3#.ffc3zyw1c&quot; target=&quot;_blank&quot;&gt;https://medium.com/@stowball/a-dummys-guide-to-redux-and-thunk-in-react-d8904a7005d3#.ffc3zyw1c&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;hr /&gt;
 
 &lt;p&gt;[1] &lt;a name=&quot;citation-1&quot; traget=&quot;_blank&quot; href=&quot;http://redux.js.org/docs/recipes/ServerRendering.html&quot;&gt;http://redux.js.org/docs/recipes/ServerRendering.html&lt;/a&gt;&lt;br /&gt;
 [2] I mean, technically, a JS function is an object but you know what I mean.&lt;a name=&quot;citation-2&quot;&gt;&lt;/a&gt;&lt;/p&gt;</content><summary type="html">The benefit/purpose of the redux-thunk middleware was pretty hard to understand when I was first going through the redux docs, so I thought that writing some things down about it would be a good idea.
