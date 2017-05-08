@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Avoiding single page application cache staleness</title>
-  <meta name="description" content="tldr: If you care about cache staleness, consider creating a multi page application instead. There are a ton of frameworks and libraries out there that addre...">
+  <meta name="description" content="There are a ton of frameworks and libraries out there that address different aspects of single page application (SPA) development. However, when to update a ...">
 
   <link rel="stylesheet" href="/assets/css/main.css">
   <link rel="canonical" href="https://shahmeer.co/blog/avoiding-single-page-application-cache-staleness.html">
@@ -78,15 +78,13 @@
       <span class="post_meta_date">May 4, 2017</span>
     </div>
 
-    <p>tldr: If you care about cache staleness, consider creating a multi page application instead.</p>
-
-<p>There are a ton of frameworks and libraries out there that address different aspects of single page application (SPA) development. However, <i>when</i> to update a client’s cache seems to get neglected<sup><a href="#citation-1">[1]</a></sup>.</p>
+    <p>There are a ton of frameworks and libraries out there that address different aspects of single page application (SPA) development. However, <i>when</i> to update a client’s cache seems to get neglected<sup><a href="#citation-1">[1]</a></sup>.</p>
 
 <p>The problem I’m referring to is probably best illustrated with an example. With a SPA, the client typically makes one request to the server for the HTML of a page. Other pages are generated dynamically through JavaScript and the data from an AJAX request. So if Shirley visits the home page of a SPA and then she clicks on a link to view Kevin’s profile, an API request is sent off to the server to retrieve data related to Kevin. This data is then used to generated HTML which will make up Kevin’s profile page.</p>
 
 <!-- read more -->
 
-<p>Say Shirley goes to someone else’s profile but then returns back to Kevin’s. It would be poor UX if our SPA made another request for Kevin’s data. So, typically, data from requests is cached by the client. If you’re using REST, your might have a map of urls to responses (which might actually be unnecessary because the browser might actually do this caching for you). If you’re using Relay and GraphQL you’ll have a normalized cache of response objects<sup><a href="#citation-2">[2]</a></sup>.</p>
+<p>Say Shirley goes to someone else’s profile but then returns back to Kevin’s. It would be poor UX if our SPA made another request for Kevin’s data after having made the same request a few moments ago. So, typically, data from requests is cached by the client. If you’re using REST, your might have a map of urls to responses (which might actually be unnecessary because the browser might actually do this caching for you). If you’re using Relay and GraphQL you’ll have a normalized cache of response objects<sup><a href="#citation-2">[2]</a></sup>.</p>
 
 <p>Caching is great but it introduces the problem of staleness. What if by the time Shirley went back to Kevin’s profile, Kevin changed his display name to ‘Kevin da Great’? Because Kevin’s data is cached it never gets updated until Shirley refreshes the page.</p>
 

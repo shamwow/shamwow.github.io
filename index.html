@@ -84,9 +84,7 @@
 
         
 
-          <p>tldr: If you care about cache staleness, consider creating a multi page application instead.</p>
-
-<p>There are a ton of frameworks and libraries out there that address different aspects of single page application (SPA) development. However, <i>when</i> to update a client’s cache seems to get neglected<sup><a href="#citation-1">[1]</a></sup>.</p>
+          <p>There are a ton of frameworks and libraries out there that address different aspects of single page application (SPA) development. However, <i>when</i> to update a client’s cache seems to get neglected<sup><a href="#citation-1">[1]</a></sup>.</p>
 
 <p>The problem I’m referring to is probably best illustrated with an example. With a SPA, the client typically makes one request to the server for the HTML of a page. Other pages are generated dynamically through JavaScript and the data from an AJAX request. So if Shirley visits the home page of a SPA and then she clicks on a link to view Kevin’s profile, an API request is sent off to the server to retrieve data related to Kevin. This data is then used to generated HTML which will make up Kevin’s profile page.</p>
 
