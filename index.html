@@ -10,7 +10,7 @@
   <meta name="description" content="Shahmeer Navid - Software Engineer">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="https://shahmeer.co/">
+  <link rel="canonical" href="http://localhost:4000/">
 
   <script type="text/javascript" src="/assets/js/main.js"></script>
 </head>
@@ -70,7 +70,35 @@
   
     <div class="post-list_post post">
       
-        <a href="/blog/avoiding-single-page-application-cache-staleness.html"><div class="post_header-image" style="background-image: url('/assets/img/post_headers/avoiding-cache-staleness.svg')"></div></a>
+        <a href="/blog/end-to-api-typing.html"><div class="post_header-image" style="background-image: url('/assets/img/post_headers/end_to_end_api_typing.svg')"></div></a>
+      
+
+      <div class="post_content">
+        <div class="post_meta">
+          <h2 class="post_meta_title--link">
+            <a href="/blog/end-to-api-typing.html">End to end rest API typing</a>
+          </h2>
+
+          <span class="post_meta_date">Aug 5, 2018</span>
+        </div>
+
+        
+
+          <p>A lot of apps use Typescript / JavaScript + Flow for frontend and backend code but I haven’t seen apps take advantage of this to create rest APIs that are statically typed end to end. I decided to set up what was needed to get a fully typed API on top of express. It’s worked pretty well for some personal projects so I’m sharing it here.</p>
+
+
+
+          <span class="post-list_post_read-more">
+            <a class="button" href="/blog/end-to-api-typing.html"> Read More</a>
+          </span>
+
+        
+      </div>
+    </div>
+  
+    <div class="post-list_post post">
+      
+        <a href="/blog/avoiding-single-page-application-cache-staleness.html"><div class="post_header-image" style="background-image: url('/assets/img/post_headers/avoiding_cache_staleness.svg')"></div></a>
       
 
       <div class="post_content">
@@ -100,7 +128,7 @@
   
     <div class="post-list_post post">
       
-        <a href="/blog/avoid-overfetching-with-filtered-queries.html"><div class="post_header-image" style="background-image: url('/assets/img/post_headers/filtered-queries.svg')"></div></a>
+        <a href="/blog/avoid-overfetching-with-filtered-queries.html"><div class="post_header-image" style="background-image: url('/assets/img/post_headers/filtered_queries.svg')"></div></a>
       
 
       <div class="post_content">
@@ -118,7 +146,7 @@
 
 <p>GraphQL does a good job of making it easy to fetch only the data you need when making a specific request. A lot has been written about GraphQL and its benefits so I won’t get too much into it. Basically, GraphQL queries make it dead simple to specify the data you want from an object.</p>
 
-<figure class="highlight"><pre><code class="language-graphql" data-lang="graphql"># An example GraphQL query fetching just the brand, capacity, and price for all water bottles that are blue.
+<pre><code># An example GraphQL query fetching just the brand, capacity, and price for all water bottles that are blue.
 {
   waterbottles(color: "blue") {
     id
@@ -126,7 +154,8 @@
     brand
     price
   }
-}</code></pre></figure>
+}
+</code></pre>
 
 <p>Note that you could definitely achieve the same thing with a typical REST endpoint and query parameters.</p>
 
@@ -136,7 +165,7 @@
 
 <p>Here, we have a page with a series of water bottles along with their brands, capacity, and prices (simplified and among other things). When you click on one of the bottles, a product page is opened, showing more information about the bottle. Assuming we have a single page app, what usually ends up happening is that another request for the selected water bottle is made:</p>
 
-<figure class="highlight"><pre><code class="language-graphql" data-lang="graphql">{
+<pre><code>{
   waterbottle(id: 101) {
     capacity
     brand
@@ -144,7 +173,8 @@
     description
     ...WaterBottleReviews
   }
-}</code></pre></figure>
+}
+</code></pre>
 
 <p>We already had the capacity, brand, and price of this water bottle so it’s inefficient to query for it again. In this example, the amount of duplicated data is pretty small. But it’s not hard to imagine a scenario where we make a request for all the reviews of a water bottle despite already having this data in memory. This has the potential to use up a lot of unnecessary bandwidth.</p>
 
@@ -162,7 +192,7 @@
   
     <div class="post-list_post post">
       
-        <a href="/blog/graph-theory-and-computer-graphics.html"><div class="post_header-image" style="background-image: url('/assets/img/post_headers/graph-theory-and-comp-sci.svg')"></div></a>
+        <a href="/blog/graph-theory-and-computer-graphics.html"><div class="post_header-image" style="background-image: url('/assets/img/post_headers/graph_theory_and_comp_sci.svg')"></div></a>
       
 
       <div class="post_content">
@@ -192,7 +222,7 @@
   
     <div class="post-list_post post">
       
-        <a href="/blog/the-purpose-of-redux-thunk.html"><div class="post_header-image" style="background-image: url('/assets/img/post_headers/redux-thunk.svg')"></div></a>
+        <a href="/blog/the-purpose-of-redux-thunk.html"><div class="post_header-image" style="background-image: url('/assets/img/post_headers/redux_thunk.svg')"></div></a>
       
 
       <div class="post_content">

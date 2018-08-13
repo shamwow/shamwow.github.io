@@ -10,7 +10,7 @@
   <meta name="description" content="Updated on May 1st, 2017. GraphQL does a good job of making it easy to fetch only the data you need when making a specific request. A lot has been written ab...">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="https://shahmeer.co/blog/avoid-overfetching-with-filtered-queries.html">
+  <link rel="canonical" href="http://localhost:4000/blog/avoid-overfetching-with-filtered-queries.html">
 
   <script type="text/javascript" src="/assets/js/main.js"></script>
 </head>
@@ -68,7 +68,7 @@
         </div>
         <div class="post">
   
-    <div class="post_header-image" style="background-image: url('/assets/img/post_headers/filtered-queries.svg')"></div>
+    <div class="post_header-image" style="background-image: url('/assets/img/post_headers/filtered_queries.svg')"></div>
   
 
   <div class="post_content">
@@ -82,7 +82,7 @@
 
 <p>GraphQL does a good job of making it easy to fetch only the data you need when making a specific request. A lot has been written about GraphQL and its benefits so I won’t get too much into it. Basically, GraphQL queries make it dead simple to specify the data you want from an object.</p>
 
-<figure class="highlight"><pre><code class="language-graphql" data-lang="graphql"># An example GraphQL query fetching just the brand, capacity, and price for all water bottles that are blue.
+<pre><code># An example GraphQL query fetching just the brand, capacity, and price for all water bottles that are blue.
 {
   waterbottles(color: "blue") {
     id
@@ -90,7 +90,8 @@
     brand
     price
   }
-}</code></pre></figure>
+}
+</code></pre>
 
 <p>Note that you could definitely achieve the same thing with a typical REST endpoint and query parameters.</p>
 
@@ -100,7 +101,7 @@
 
 <p>Here, we have a page with a series of water bottles along with their brands, capacity, and prices (simplified and among other things). When you click on one of the bottles, a product page is opened, showing more information about the bottle. Assuming we have a single page app, what usually ends up happening is that another request for the selected water bottle is made:</p>
 
-<figure class="highlight"><pre><code class="language-graphql" data-lang="graphql">{
+<pre><code>{
   waterbottle(id: 101) {
     capacity
     brand
@@ -108,7 +109,8 @@
     description
     ...WaterBottleReviews
   }
-}</code></pre></figure>
+}
+</code></pre>
 
 <p>We already had the capacity, brand, and price of this water bottle so it’s inefficient to query for it again. In this example, the amount of duplicated data is pretty small. But it’s not hard to imagine a scenario where we make a request for all the reviews of a water bottle despite already having this data in memory. This has the potential to use up a lot of unnecessary bandwidth.</p>
 
@@ -120,7 +122,7 @@
 
 <p>Our state could look something like:</p>
 
-<figure class="highlight"><pre><code class="language-text" data-lang="text">{
+<pre><code>{
   waterbottles: {
     ...
 
@@ -135,68 +137,70 @@
 
     ...
   },
-}</code></pre></figure>
+}
+</code></pre>
 
 <p>So we know we already have capacity, brand, and price. Our query for the water bottle’s product page then only needs to be:</p>
 
-<figure class="highlight"><pre><code class="language-graphql" data-lang="graphql">{
+<pre><code>{
   waterbottle(id: 101) {
     description
     ...WaterBottleReviews
   }
-}</code></pre></figure>
+}
+</code></pre>
 
-<p>It turns out that Relay Classic already does this.<sup><a href="#citation-1">[1]</a></sup> Relay Modern also has support for this via the <code class="highlighter-rouge">RefetchContainer</code><sup><a href="#citation-2">[2]</a></sup>. If you’re using GraphQL but not using Relay though, there’s a little more work involved. The approach that would work with most GraphQL clients would be to implement a query builder. The output of the query builder can then be passed into any client. For illustrative purposes, a very simplistic one in JavaScript might look like:</p>
+<p>It turns out that Relay Classic already does this.<sup><a href="#citation-1">[1]</a></sup> Relay Modern also has support for this via the <code>RefetchContainer</code><sup><a href="#citation-2">[2]</a></sup>. If you’re using GraphQL but not using Relay though, there’s a little more work involved. The approach that would work with most GraphQL clients would be to implement a query builder. The output of the query builder can then be passed into any client. For illustrative purposes, a very simplistic one in JavaScript might look like:</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="cm">/*
- * Example Input:
- * {
- *    brand: 1,
- *    color: 1,
- *    reviews: {
- *      username: 1,
- *      text: 1
- *    },
- *    price: 0
- * }
- *
- * Example Output:
- * {
- *    brand
- *    color
- *    reviews: {
- *      username
- *      text
- *    }
- * }
- *
- * @param jsonQuery: Object - JSON used to build the GraphQL query.
- * @returns String - The graphQL query string.
- **/</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="cm">/*</span>
+<span class="cm"> * Example Input:</span>
+<span class="cm"> * {</span>
+<span class="cm"> *    brand: 1,</span>
+<span class="cm"> *    color: 1,</span>
+<span class="cm"> *    reviews: {</span>
+<span class="cm"> *      username: 1,</span>
+<span class="cm"> *      text: 1</span>
+<span class="cm"> *    },</span>
+<span class="cm"> *    price: 0</span>
+<span class="cm"> * }</span>
+<span class="cm"> *</span>
+<span class="cm"> * Example Output:</span>
+<span class="cm"> * {</span>
+<span class="cm"> *    brand</span>
+<span class="cm"> *    color</span>
+<span class="cm"> *    reviews: {</span>
+<span class="cm"> *      username</span>
+<span class="cm"> *      text</span>
+<span class="cm"> *    }</span>
+<span class="cm"> * }</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param jsonQuery: Object - JSON used to build the GraphQL query.</span>
+<span class="cm"> * @returns String - The graphQL query string.</span>
+<span class="cm"> **/</span>
 <span class="kr">const</span> <span class="nx">QueryBuilder</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">jsonQuery</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">'{\n'</span><span class="p">;</span>
-  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="nx">of</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">jsonQuery</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">jsonQuery</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">jsonQuery</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">===</span> <span class="s1">'object'</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">output</span> <span class="o">+=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">key</span><span class="p">}</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">QueryBuilder</span><span class="p">(</span><span class="nx">jsonQuery</span><span class="p">[</span><span class="nx">key</span><span class="p">])}</span><span class="err">\</span><span class="nx">n</span><span class="err">`</span><span class="p">;</span>
+  <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s1">&#39;{\n&#39;</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="k">of</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">jsonQuery</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">jsonQuery</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">jsonQuery</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">output</span> <span class="o">+=</span> <span class="sb">`</span><span class="si">${</span><span class="nx">key</span><span class="si">}</span><span class="sb">: </span><span class="si">${</span><span class="nx">QueryBuilder</span><span class="p">(</span><span class="nx">jsonQuery</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span><span class="si">}</span><span class="err">\</span><span class="sb">n`</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">jsonQuery</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
-      <span class="nx">output</span> <span class="o">+=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">key</span><span class="p">}</span><span class="err">\</span><span class="nx">n</span><span class="err">`</span><span class="p">;</span>
+      <span class="nx">output</span> <span class="o">+=</span> <span class="sb">`</span><span class="si">${</span><span class="nx">key</span><span class="si">}</span><span class="err">\</span><span class="sb">n`</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">}</span>
-  <span class="k">return</span> <span class="nx">output</span> <span class="o">+</span> <span class="s1">'}'</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">output</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span><span class="p">;</span>
 <span class="p">};</span></code></pre></figure>
 
 <p>The above code will take a JSON object and include any keys with truthy values in the GraphQL query generated. Of course, this doesn’t work completely as there are multiple GraphQL features, like variables and aliases, that aren’t accounted for. To come up with a full fledged query builder, we would need a way to encode these features in JSON.</p>
 
-<p>Because <code class="highlighter-rouge">jsonQuery</code> is a JavaScript object, we can easily diff it against any other JavaScript object, allowing us to perform our optimization. Again, there are some lingering questions, like “how would the diffing look like when the GraphQL query is fetching two different objects?”. These should be solvable with a little bit of design work.</p>
+<p>Because <code>jsonQuery</code> is a JavaScript object, we can easily diff it against any other JavaScript object, allowing us to perform our optimization. Again, there are some lingering questions, like “how would the diffing look like when the GraphQL query is fetching two different objects?”. These should be solvable with a little bit of design work.</p>
 
 <p>I also haven’t discussed GraphQL on other platforms, like Android and iOS. Typically, GraphQL queries are statically written (I’ll touch in this in a bit) and used to generate classes, allowing GraphQL to integrate well with each platform’s type system. This of course makes what we talked about above difficult. Unfortunately, I don’t have enough experience with GraphQL on mobile platforms so can’t really offer any useful thoughts here.</p>
 
-<p>Going back to REST though, we can achieve what we talked about pretty easily. We can set up our rest endpoint to return fields that are specified through query parameters: <code class="highlighter-rouge">GET /api/waterbottles/101?brand=1&amp;price=1</code> would return the brand and the price for water bottle with id <code class="highlighter-rouge">101</code>.</p>
+<p>Going back to REST though, we can achieve what we talked about pretty easily. We can set up our rest endpoint to return fields that are specified through query parameters: <code>GET /api/waterbottles/101?brand=1&amp;price=1</code> would return the brand and the price for water bottle with id <code>101</code>.</p>
 
 <p>Given existing data for a water bottle, the endpoint string is easy to construct. In fact, most request JavaScript libraries allow query parameters to be specified using an object. A similar situation exists in Java and Objective-C/Swift land.</p>
 
-<p>Some notes. If you’re using GraphQL (Relay or not), strongly consider static queries<sup><a href="#citation-3">[3]</a></sup>. Even if you don’t use Relay, you can still precompile these and have your request payload just be an identifier rather than sending up the entire GraphQL query. You can also optimize the amount of data you fetch by having different static queries and doing something similar to Relay’s <code class="highlighter-rouge">RefetchContainer</code>. Regardless though, in almost all cases sending along some more data with a request isn’t going to be the main bottleneck. Something like actually initiating the request will be. So if you’re going to make a a request for data, sending along some more probably won’t hurt performance too much. This can obviously differ on a case by case basis so, as with everything, understand your situation before taking action.</p>
+<p>Some notes. If you’re using GraphQL (Relay or not), strongly consider static queries<sup><a href="#citation-3">[3]</a></sup>. Even if you don’t use Relay, you can still precompile these and have your request payload just be an identifier rather than sending up the entire GraphQL query. You can also optimize the amount of data you fetch by having different static queries and doing something similar to Relay’s <code>RefetchContainer</code>. Regardless though, in almost all cases sending along some more data with a request isn’t going to be the main bottleneck. Something like actually initiating the request will be. So if you’re going to make a a request for data, sending along some more probably won’t hurt performance too much. This can obviously differ on a case by case basis so, as with everything, understand your situation before taking action.</p>
 
 <hr />
 
