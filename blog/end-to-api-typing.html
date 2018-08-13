@@ -10,7 +10,7 @@
   <meta name="description" content="A lot of apps use Typescript / JavaScript + Flow for frontend and backend code but I haven’t seen apps take advantage of this to create rest APIs that are st...">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/blog/end-to-api-typing.html">
+  <link rel="canonical" href="https://shahmeer.co/blog/end-to-api-typing.html">
 
   <script type="text/javascript" src="/assets/js/main.js"></script>
 </head>
@@ -152,8 +152,9 @@
 
 <span class="kr">interface</span> <span class="nx">RouterMethod</span><span class="o">&lt;</span><span class="nx">Method</span> <span class="kr">extends</span> <span class="nx">HttpMethod</span><span class="o">&gt;</span> <span class="p">{</span>
   <span class="c1">// I wanted to keep route definitions the same as they would be with vanilla express</span>
-  <span class="c1">// but also wanted to be able to type whether or not the user object is defined - hence </span>
-  <span class="c1">// the multiple definitions in this interface.</span>
+  <span class="c1">// but also wanted to be able to type whether or not the user object is defined. The multiple </span>
+  <span class="c1">// definitions here are to support the arbitrary number of middleware that express allows</span>
+  <span class="c1">// in route definitions while still typing authenticated routes properly.</span>
 
   <span class="o">&lt;</span><span class="nx">Path</span> <span class="kr">extends</span> <span class="nx">keyof</span> <span class="nx">AppApiDef</span><span class="p">[</span><span class="nx">Method</span><span class="p">]</span><span class="o">&gt;</span><span class="p">(</span>
     <span class="nx">path</span>: <span class="kt">Path</span><span class="p">,</span>
@@ -200,7 +201,7 @@
     <span class="nx">handler</span>: <span class="kt">Handler</span><span class="o">&lt;</span><span class="nx">AppApiDef</span><span class="p">[</span><span class="nx">Method</span><span class="p">][</span><span class="nx">Path</span><span class="p">],</span> <span class="s1">&#39;populate&#39;</span><span class="o">&gt;</span><span class="p">,</span>
   <span class="p">)</span><span class="o">:</span> <span class="k">void</span><span class="p">;</span>
   
-  <span class="c1">// More definitions like the ones above.</span>
+  <span class="c1">// More definitions like the ones above to support more middleware.</span>
 <span class="p">}</span>
 
 <span class="kr">export</span> <span class="kr">class</span> <span class="nx">Router</span> <span class="p">{</span>
