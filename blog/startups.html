@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Avoiding single page application cache staleness</title>
-  <meta name="description" content="There are a ton of frameworks and libraries out there that address different aspects of single page application (SPA) development. However, when to update a ...">
+  <title>Startups</title>
+  <meta name="description" content="You’re an engineer who just quit their job at a mid to late stage tech company and are thinking of what to do next. You’ve seen the company you spent the las...">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="https://shahmeer.co/blog/avoiding-single-page-application-cache-staleness.html">
+  <link rel="canonical" href="https://shahmeer.co/blog/startups.html">
 
   <script type="text/javascript" src="/assets/js/main.js"></script>
 </head>
@@ -68,56 +68,29 @@
       </div>
       <div class="post">
   
-    <div class="post_header-image" style="background-image: url('/assets/img/post_headers/avoiding_cache_staleness.svg')"></div>
+    <div class="post_header-image" style="background-image: url('/assets/img/post_headers/value_of_time.svg')"></div>
   
 
   <div class="post_content">
     <div class="post_meta">
-      <h2 class="post_meta_title">Avoiding single page application cache staleness</h2>
+      <h2 class="post_meta_title">Startups</h2>
 
-      <span class="post_meta_date">May 4, 2017</span>
+      <span class="post_meta_date">May 6, 2022</span>
     </div>
 
-    <p>There are a ton of frameworks and libraries out there that address different aspects of single page application (SPA) development. However, <i>when</i> to update a client’s cache seems to get neglected<sup><a href="#citation-1">[1]</a></sup>.</p>
+    <p>You’re an engineer who just quit their job at a mid to late stage tech company and are thinking of what to do next. You’ve seen the company you spent the last ~4 years at grow from 100s of people to X000s of people and are excited about working again at a smaller company - but you’re really bullish about starting your own.</p>
 
-<p>The problem I’m referring to is probably best illustrated with an example. With a SPA, the client typically makes one request to the server for the HTML of a page. Other pages are generated dynamically through JavaScript and the data from an AJAX request. So if Shirley visits the home page of a SPA and then she clicks on a link to view Kevin’s profile, an API request is sent off to the server to retrieve data related to Kevin. This data is then used to generated HTML which will make up Kevin’s profile page.</p>
+<p>You have friends who have started companies and from seeing them go through the journey, you know how hard it will be. But you’ve always had this urge to at least try starting a company and you’ve never shied away from a challenge - in fact, you crave it. After working on slow moving projects that you felt like you had no control over, you want to work on something where you’re calling all the shots.</p>
+
+<p>Worst case, you’ll explore for 6 months max and if nothing works out, you’ll go work at a startup. But really, you’re optimistic and dont think it’ll take more than a month or two before you’ve figured it all out.</p>
 
 <!-- read more -->
 
-<p>Say Shirley goes to someone else’s profile but then returns back to Kevin’s. It would be poor UX if our SPA made another request for Kevin’s data after having made the same request a few moments ago. So, typically, data from requests is cached by the client. If you’re using REST, your might have a map of urls to responses (which might actually be unnecessary because the browser might actually do this caching for you). If you’re using Relay and GraphQL you’ll have a normalized cache of response objects<sup><a href="#citation-2">[2]</a></sup>.</p>
+<p>It’s now month three and you still can’t bring yourself to commit to an idea. You’ve spent weeks brainstorming with portential cofounders but every idea you put through the <img src="https://spark-public.s3.amazonaws.com/startup/lecture_slides/lecture5-market-wireframing-design.pdf" alt="maze" /> has some flaw that prevents you from loving it. Then you hear about a company whose product is literally the same product you thought of 5 weeks ago. They just raised a $5M seed round. Did they not see the flaws you saw? Are you just overly pessimistic?</p>
 
-<p>Caching is great but it introduces the problem of staleness. What if by the time Shirley went back to Kevin’s profile, Kevin changed his display name to ‘Kevin da Great’? Because Kevin’s data is cached it never gets updated until Shirley refreshes the page.</p>
+<p>You start thinking that maybe the startup journey isn’t for you. You suddenly start feeling anxious about how the market is doing, the layoffs, and the hiring freezes. Maybe you should cut that 6 months short and go work somewhere?</p>
 
-<p>In some cases, this may not be a problem. But let’s assume staleness is something we want to solve. There are a couple of ways to go about it:</p>
-
-<ol>
-  <li>
-    <p>Always make an AJAX request each time we visit a profile page. This still gives us poor UX though.</p>
-  </li>
-  <li>
-    <p>Have a time to live (TTL) for the items in our cache. A good value for the TTL would depend on what type of application you have. For most use cases, it would be pretty small since the UX problem we’re trying to avoid usually occurs when the user quickly goes back to a page that they’ve already loaded.</p>
-
-    <p>This is actually similar to what the browser does if you have a multi page app. Hitting the back button loads the page from cache, which is why it’s usually so quick.</p>
-  </li>
-  <li>
-    <p>Have the server tell us when something has been updated. This might be complicated to implement though. We could subscribe to updates on particular objects through something like postgres triggers<sup><a href="#citation-3">[3]</a></sup>. This works fine when we update objects directly but updates often happen indirectly. For example, if Kevin adds a photo his user object doesn’t get updated, a new photos object is added that has a foreign key reference to Kevin. It’s easy to see how this can quickly increase in complexity.</p>
-
-    <p>On top of that, there’s the issue of scalability. Obviously polling isn’t going to work - we might as well have just made a full request. Some sort of long lived connection is probably the way to go. Whether you end up using websockets or something else, your server will need to maintain a long lived connection with the client. The number of clients we can support becomes limited.</p>
-  </li>
-</ol>
-
-<p>So which solution do we pick? Approach 1 doesn’t really solve the UX problem and approach 3 introduces a ton of complexity and cost. From the 3, approach number 2 looks the most attractive.</p>
-
-<p>There’s actually one other thing we can do - forget about single page and go back to multi page apps. Just some of the benefits: we get caching for free since it gets handled by the browser; it reduces a lot of UI work needed to create various loading screens - something that may actually give your app a better impression<sup><a href="#citation-4">[4]</a></sup>; in a mobile centric world, it’s actually better to have a thin client and a thick server than the other way around; multi page apps work better for people with JavaScript disabled; etc, etc.</p>
-
-<p>To be clear, when I say multi page apps, I’m referring to applications whose main routing logic is handled by the server but this doesn’t mean that everything needs to be a separate page. If Shirley wants to look at Kevin’s pictures, it doesn’t make since to load up a separate page for each picture. So this part of the app should be handled with AJAX. Basically, use good judgment.</p>
-
-<hr />
-
-<p>[1] Based on me not being able to find good information on the topic.<br />
-[2] <a name="citation-2" target="_blank" href="https://facebook.github.io/relay/docs/thinking-in-graphql.html#client-caching">https://facebook.github.io/relay/docs/thinking-in-graphql.html#client-caching</a><br />
-[3] <a name="citation-3" target="_blank" href="https://en.wikipedia.org/wiki/Comet_(programming) ">https://en.wikipedia.org/wiki/Comet_(programming)</a><br />
-[4] I’ve noticed that a loading screen gives the impression that the app is slow but waiting for a page to load in a multi page app gives the impression that the internet connection is slow<a name="citation-4"></a><br /></p>
+<p>Time is neccesary though, great things don’t happen overnight or even in a couple months. The right idea will take time to come to you. Uncertainty is part of the journey and learning to embrace it is key.</p>
 
   </div>
 
